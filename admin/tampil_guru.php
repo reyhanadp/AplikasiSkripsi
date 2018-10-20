@@ -16,21 +16,15 @@ $result_guru = mysqli_query( $link, $query_guru );
 
 			<!-- page start-->
 			<div class="content-panel">
-<!--				<div class="row mb">-->
-					<div class="col-md-12">
+				<!--				<div class="row mb">-->
+				<div class="col-md-12">
+					<p>
 						<button type="button" class="btn btn-theme02">Tambah Data Guru</button>
-					</div>
-					<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
-				<div class="col-md-12"></div>
+					</p>
+				</div>
 
-<!--				</div>-->
+
+				<!--				</div>-->
 				<div class="adv-table">
 
 					<table cellpadding="0" cellspacing="0" border="0" class="display table table-bordered" id="hidden-table-info">

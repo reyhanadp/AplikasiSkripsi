@@ -89,7 +89,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 
 					</form>
 
-					<div class="login100-more" style="background-image: url('login/images/background.jpg');">
+					<div class="login100-more" style="background-image: url('foto/background.jpg');">
 					</div>
 				</div>
 			</div>

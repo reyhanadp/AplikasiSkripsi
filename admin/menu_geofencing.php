@@ -1,5 +1,5 @@
 <li class="mt">
-	<a class="active" href="index.php">
+	<a href="index.php">
               <i class="fa fa-dashboard"></i>
               <span>Dashboard</span>
               </a>
@@ -48,7 +48,7 @@
 
 </li>
 <li>
-	<a href="index.php?menu=geofencing&action=tampil">
+	<a class="active" href="index.php?menu=geofencing&action=tampil">
               <i class="fa fa-map-marker"></i>
               <span>Data Geofencing</span>
               </a>

@@ -99,6 +99,8 @@
 						require( 'menu_jabatan.php' );
 					} else if ( $menu == 'kelas' ) {
 						require( 'menu_kelas.php' );
+					} else if ( $menu == 'geofencing' ) {
+						require( 'menu_geofencing.php' );
 					}
 				}
 			} else {
@@ -168,6 +170,11 @@
 					{
 						//panggil file tampil data guru
 						require( 'tampil_cari_kelas.php' );
+					}
+			else if(($_GET['menu']=='geofencing') && ($_GET['action']=='tampil'))
+					{
+						//panggil file tampil data guru
+						require( 'tampil_geofencing.php' );
 					}
 			} else {
 			require( 'tampil_dashboard.php' );

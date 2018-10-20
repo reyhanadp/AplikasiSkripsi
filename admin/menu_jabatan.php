@@ -47,3 +47,11 @@
 
 
 </li>
+<li>
+	<a href="index.php?menu=geofencing&action=tampil">
+              <i class="fa fa-map-marker"></i>
+              <span>Data Geofencing</span>
+              </a>
+
+
+</li>
