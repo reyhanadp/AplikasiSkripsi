@@ -5,11 +5,14 @@
 				<section class="panel">
 					<header class="panel-heading">
 						
-						<div class="col-md-11">
+						<div class="col-md-10">
 							Data Geofencing
 						</div>
 						<div class="col-md-1">
-							<button class="btn btn-round btn-primary">Delete</button>
+							<button class="btn btn-round btn-primary" id="save-button">Save</button>
+						</div>
+						<div class="col-md-1">
+							<button class="btn btn-round btn-primary" id="delete-button">Delete</button>
 						</div>
 						<br>
 
@@ -99,6 +102,9 @@
 				setSelection( newShape, isNotMarker );
 				//~ }// end if
 			} );
+		google.maps.event.addListener( drawingManager, 'drawingmode_changed', clearSelection );
+		google.maps.event.addListener( map, 'click', clearSelection );
+		google.maps.event.addDomListener( document.getElementById( 'delete-button' ), 'click', deleteSelectedShape );
 		// The marker, positioned at Uluru
 	}
 	
@@ -107,7 +113,79 @@
 			selectedShape = shape;
 			if ( isNotMarker )
 				shape.setEditable( true );
-			selectColor( shape.get( 'fillColor' ) || shape.get( 'strokeColor' ) );
+//			selectColor( shape.get( 'fillColor' ) || shape.get( 'strokeColor' ) );
 			updateCurSelText( shape );
+		}
+	
+	function deleteSelectedShape() {
+			if ( selectedShape ) {
+				selectedShape.setMap( null );
+			}
+		}
+	
+	function clearSelection() {
+			if ( selectedShape ) {
+				if ( typeof selectedShape.setEditable == 'function' ) {
+					selectedShape.setEditable( false );
+				}
+				selectedShape = null;
+			}
+//			curseldiv.innerHTML = "<b>cursel</b>:";
+		}
+	
+	function selectColor( color ) {
+			selectedColor = color;
+			for ( var i = 0; i < colors.length; ++i ) {
+				var currColor = colors[ i ];
+				colorButtons[ currColor ].style.border = currColor == color ? '2px solid #789' : '2px solid #fff';
+			}
+			// Retrieves the current options from the drawing manager and replaces the
+			// stroke or fill color as appropriate.
+			var polylineOptions = drawingManager.get( 'polylineOptions' );
+			polylineOptions.strokeColor = color;
+			drawingManager.set( 'polylineOptions', polylineOptions );
+			var rectangleOptions = drawingManager.get( 'rectangleOptions' );
+			rectangleOptions.fillColor = color;
+			drawingManager.set( 'rectangleOptions', rectangleOptions );
+			var circleOptions = drawingManager.get( 'circleOptions' );
+			circleOptions.fillColor = color;
+			drawingManager.set( 'circleOptions', circleOptions );
+			var polygonOptions = drawingManager.get( 'polygonOptions' );
+			polygonOptions.fillColor = color;
+			drawingManager.set( 'polygonOptions', polygonOptions );
+		}
+	
+	function updateCurSelText( shape ) {
+			posstr = "" + selectedShape.position;
+			if ( typeof selectedShape.position == 'object' ) {
+				posstr = selectedShape.position.toUrlValue();
+			}
+			pathstr = "" + selectedShape.getPath;
+			if ( typeof selectedShape.getPath == 'function' ) {
+				pathstr = "[ ";
+				for ( var i = 0; i < selectedShape.getPath().getLength(); i++ ) {
+					// .toUrlValue(5) limits number of decimals, default is 6 but can do more
+					pathstr += selectedShape.getPath().getAt( i ).toUrlValue() + " , ";
+				}
+				pathstr += "]";
+			}
+			alert(pathstr);
+			bndstr = "" + selectedShape.getBounds;
+			cntstr = "" + selectedShape.getBounds;
+			if ( typeof selectedShape.getBounds == 'function' ) {
+				var tmpbounds = selectedShape.getBounds();
+				cntstr = "" + tmpbounds.getCenter().toUrlValue();
+				bndstr = "[NE: " + tmpbounds.getNorthEast().toUrlValue() + " SW: " + tmpbounds.getSouthWest().toUrlValue() + "]";
+			}
+			alert(bndstr);
+			cntrstr = "" + selectedShape.getCenter;
+			if ( typeof selectedShape.getCenter == 'function' ) {
+				cntrstr = "" + selectedShape.getCenter().toUrlValue();
+			}
+			radstr = "" + selectedShape.getRadius;
+			if ( typeof selectedShape.getRadius == 'function' ) {
+				radstr = "" + selectedShape.getRadius();
+			}
+			curseldiv.innerHTML = "<b>cursel</b>: " + selectedShape.type + " " + selectedShape + "; <i>pos</i>: " + posstr + " ; <i>path</i>: " + pathstr + " ; <i>bounds</i>: " + bndstr + " ; <i>Cb</i>: " + cntstr + " ; <i>radius</i>: " + radstr + " ; <i>Cr</i>: " + cntrstr;
 		}
 </script>
