@@ -11,7 +11,7 @@
 <script type="text/javascript" src="../halaman_utama/lib/jquery.backstretch.min.js"></script>
 <!--script for this page-->
 <!--Google Map-->
-<script async defer type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&callback=initMap&sensor=false&v=3.21.5a&libraries=drawing&signed_in=true&libraries=places,drawing"></script>
+<script async defer type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&callback=initMap&libraries=drawing&libraries=places,drawing"></script>
 
 
 <script type="text/javascript">
