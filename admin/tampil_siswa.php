@@ -20,8 +20,119 @@ $result = mysqli_query( $link, $query );
 
 				<div class="col-md-12">
 					<p>
-						<button type="button" class="btn btn-theme02" data-toggle="modal" href="#myModal">Tambah Data Siswa</button>
+						<button type="button" class="btn btn-theme02" data-toggle="modal" data-target="#myModal">Tambah Data Siswa</button>
 					</p>
+				</div>
+				<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title" id="myModalLabel">Tambah Data Siswa</h4>
+							</div>
+							<form action="proses_tambah_data_siswa.php" method="POST" onSubmit="return confirm('Apakah anda yakin ingin menyimpan data?');" enctype="multipart/form-data">
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="nis">NIS : </label>
+									<input type="text" class="form-control" name="nis" required>
+								</div>
+								<div class="form-group">
+									<label for="nama">Nama Siswa : </label>
+									<input type="text" class="form-control" name="nama" required>
+								</div>
+								<div class="form-group">
+									<label for="password">Password : </label>
+									<input type="text" class="form-control" name="password" required>
+								</div>
+								<div class="form-group">
+									<label for="tempat_lahir">Tempat Lahir : </label>
+									<input type="text" class="form-control" name="tempat_lahir" required>
+								</div>
+								<div class="form-group">
+									<label for="tanggal_lahir">Tanggal Lahir : </label>
+									<input type="date" class="form-control" name="tanggal_lahir" required>
+								</div>
+								<div class="form-group">
+									<label for="kelas">Kelas : </label>
+									<select name="id_kelas" class="form-control">
+										<?php
+										//								$link = koneksi_db();
+										$sql = "SELECT * FROM tb_kelas";
+										$res = mysqli_query( $link, $sql );
+										while ( $data_kelas = mysqli_fetch_array( $res ) ) {
+											?>
+										<option value="<?php echo $data_kelas['id_kelas']; ?>">
+											<?php echo $data_kelas['kelas']." ".$data_kelas['tingkatan']; ?>
+										</option>
+										<?php
+										}
+										//								$link -> close();
+										?>
+
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="id_orangtua">Orangtua:</label>
+									<select name="id_orangtua" class="form-control">
+										<?php
+										//								$link = koneksi_db();
+										$sql = "SELECT * FROM tb_orangtua where Status='0'";
+										$res = mysqli_query( $link, $sql );
+										while ( $data_orangtua = mysqli_fetch_array( $res ) ) {
+											?>
+										<option value="<?php echo $data_orangtua['id_orangtua']; ?>">
+											<?php echo $data_orangtua['nama']; ?>
+										</option>
+										<?php
+										}
+										//								$link -> close();
+										?>
+
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="nuptk">Guru:</label>
+									<select name="nuptk" class="form-control">
+										<?php
+										//								$link = koneksi_db();
+										$sql = "SELECT * FROM tb_guru where Status='0'";
+										$res = mysqli_query( $link, $sql );
+										while ( $data_guru = mysqli_fetch_array( $res ) ) {
+											?>
+										<option value="<?php echo $data_guru['nuptk']; ?>">
+											<?php echo $data_guru['nama']; ?>
+										</option>
+										<?php
+										}
+										//								$link -> close();
+										?>
+
+									</select>
+								</div>
+								<div class="form-group">
+									<label for="alamat">Alamat :</label>
+									<textarea class="form-control" rows="3" name="alamat"></textarea>
+								</div>
+								<div class="form-group">
+									<label for="foto">Foto:</label>
+									<input type="file" class="form-control" name="foto">
+								</div>
+								<div class="form-group">
+									<label for="status">Status:</label>
+									<select name="status" class="form-control">
+										<option value="0">Siswa Aktif</option>
+										<option value="1">Siswa Alumni</option>
+									</select>
+
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="reset" class="btn btn-default">Reset</button>
+								<button type="submit" class="btn btn-primary">Simpan</button>
+							</div>
+							</form>
+						</div>
+					</div>
 				</div>
 
 
@@ -82,7 +193,7 @@ $result = mysqli_query( $link, $query );
 <script type="text/javascript">
 	function fnFormatDetails( oTable, nTr ) {
 		var sOut;
-		var nis, nama_siswa, alamat, tempat_lahir, tgl_lahir, status, nama_orangtua, kelas, tingkatan,nuptk,nama_guru;
+		var nis, nama_siswa, alamat, tempat_lahir, tgl_lahir, status, nama_orangtua, kelas, tingkatan, nuptk, nama_guru;
 		var aData = oTable.fnGetData( nTr );
 		$.ajax( {
 			type: 'post',
@@ -105,11 +216,11 @@ $result = mysqli_query( $link, $query );
 				tingkatan = data.tingkatan;
 				nuptk = data.nuptk;
 				nama_guru = data.nama_guru;
-				
-				if(status==4){
-					status='Siswa Alumni';
-				}else{
-					status='Siswa Aktif';
+
+				if ( status == 4 ) {
+					status = 'Siswa Alumni';
+				} else {
+					status = 'Siswa Aktif';
 				}
 			}
 		} );
@@ -132,7 +243,7 @@ $result = mysqli_query( $link, $query );
 
 	function fnFormatEdit( oTable, nTr ) {
 		var sOut;
-		var nis, nama_siswa, alamat, tempat_lahir, tgl_lahir, status, nama_orangtua, kelas, tingkatan,id_kelas,password,id_orangtua, nuptk;
+		var nis, nama_siswa, alamat, tempat_lahir, tgl_lahir, status, nama_orangtua, kelas, tingkatan, id_kelas, password, id_orangtua, nuptk;
 		var jmlDataKelas, isiKelas;
 		var aData = oTable.fnGetData( nTr );
 		$.ajax( {
@@ -160,8 +271,8 @@ $result = mysqli_query( $link, $query );
 				nuptk = data.nuptk;
 			}
 		} );
-		
-		
+
+
 		$.ajax( {
 			type: 'post',
 			async: false,
@@ -178,22 +289,22 @@ $result = mysqli_query( $link, $query );
 
 				//perulangan untuk menayangkan data dalam tabel
 				for ( var a = 0; a < jmlDataKelas; a++ ) {
-					if(id_kelas == data[a]["id_kelas"] ){
-						isiKelas += '<option value="'+data[a]["id_kelas"]+'" selected>';
-					}else{
-						isiKelas += '<option value="'+data[a]["id_kelas"]+'">';
+					if ( id_kelas == data[ a ][ "id_kelas" ] ) {
+						isiKelas += '<option value="' + data[ a ][ "id_kelas" ] + '" selected>';
+					} else {
+						isiKelas += '<option value="' + data[ a ][ "id_kelas" ] + '">';
 					}
 					//mencetak baris baru
-					
-					isiKelas += data[a]["kelas"]+' '+data[a]["tingkatan"]+'</option>';
+
+					isiKelas += data[ a ][ "kelas" ] + ' ' + data[ a ][ "tingkatan" ] + '</option>';
 				}
 				//menayangkan jumlah data
 				isiKelas += '</select>';
 			}
 		} );
-		
-		var jmlDataOrangtua,isiOrangtua;
-		
+
+		var jmlDataOrangtua, isiOrangtua;
+
 		$.ajax( {
 			type: 'post',
 			async: false,
@@ -210,22 +321,22 @@ $result = mysqli_query( $link, $query );
 
 				//perulangan untuk menayangkan data dalam tabel
 				for ( var a = 0; a < jmlDataOrangtua; a++ ) {
-					if(id_orangtua == data[a]["id_orangtua"] ){
-						isiOrangtua += '<option value="'+data[a]["id_orangtua"]+'" selected>';
-					}else{
-						isiOrangtua += '<option value="'+data[a]["id_orangtua"]+'">';
+					if ( id_orangtua == data[ a ][ "id_orangtua" ] ) {
+						isiOrangtua += '<option value="' + data[ a ][ "id_orangtua" ] + '" selected>';
+					} else {
+						isiOrangtua += '<option value="' + data[ a ][ "id_orangtua" ] + '">';
 					}
 					//mencetak baris baru
-					
-					isiOrangtua += data[a]["nama"]+'</option>';
+
+					isiOrangtua += data[ a ][ "nama" ] + '</option>';
 				}
 				//menayangkan jumlah data
 				isiOrangtua += '</select>';
 			}
 		} );
-		
-		var jmlDataGuru,isiGuru;
-		
+
+		var jmlDataGuru, isiGuru;
+
 		$.ajax( {
 			type: 'post',
 			async: false,
@@ -242,22 +353,22 @@ $result = mysqli_query( $link, $query );
 
 				//perulangan untuk menayangkan data dalam tabel
 				for ( var a = 0; a < jmlDataGuru; a++ ) {
-					if(nuptk == data[a]["nuptk"] ){
-						isiGuru += '<option value="'+data[a]["nuptk"]+'" selected>';
-					}else{
-						isiGuru += '<option value="'+data[a]["nuptk"]+'">';
+					if ( nuptk == data[ a ][ "nuptk" ] ) {
+						isiGuru += '<option value="' + data[ a ][ "nuptk" ] + '" selected>';
+					} else {
+						isiGuru += '<option value="' + data[ a ][ "nuptk" ] + '">';
 					}
 					//mencetak baris baru
-					
-					isiGuru += data[a]["nama"]+'</option>';
+
+					isiGuru += data[ a ][ "nama" ] + '</option>';
 				}
 				//menayangkan jumlah data
 				isiGuru += '</select>';
 			}
 		} );
 		var onsubmit = "return confirm('Apakah anda yakin ingin menyimpan data?');";
-		
-		sOut = '<form action="proses_ubah.php?nis='+nis+'" method="post" onsubmit="'+onsubmit+'" enctype="multipart/form-data">'
+
+		sOut = '<form action="proses_ubah.php?nis=' + nis + '" method="post" onsubmit="' + onsubmit + '" enctype="multipart/form-data">'
 		sOut += '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">';
 		sOut += '<tr><td><b>NIS </td><td> : ' + nis + '</b></td></tr>';
 		sOut += '<tr><td><b>Nama Siswa </td><td> : </b><input type="text" class="form-control round-form" name="nama" value="' + nama_siswa + '"></td></tr>';
@@ -270,10 +381,10 @@ $result = mysqli_query( $link, $query );
 		sOut += '<tr><td><b>Guru </td><td> : </b>' + isiGuru + '</td></tr>';
 		sOut += '<tr><td><b>Foto </td><td> : </b><input type="file" name="foto" class="form-control round-form"></td></tr>'
 		sOut += '<tr><td><b>Status </td><td> : </b><select name="status" class="form-control round-form">';
-		if(status == 1){
+		if ( status == 1 ) {
 			sOut += '<option value="0"> Siswa Aktif </option>';
 			sOut += '<option value="1" selected> Siswa Alumni </option>';
-		}else{
+		} else {
 			sOut += '<option value="0" selected> Siswa Aktif </option>';
 			sOut += '<option value="1"> Siswa Alumni </option>';
 		}
@@ -284,4 +395,3 @@ $result = mysqli_query( $link, $query );
 		return sOut;
 	}
 </script>
-

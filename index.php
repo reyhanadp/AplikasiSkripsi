@@ -4,12 +4,12 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 	if ( $_SESSION[ 's_kode_jabatan' ] == "BKS" ) {
 		echo( "<script> location.href ='admin/index.php';</script>" );
 	} else if ( $_SESSION[ 's_kode_jabatan' ] == "KSK" ) {
-		echo( "<script> location.href ='admin/index.php';</script>" );
+		echo( "<script> location.href ='kepsek/index.php';</script>" );
 	} else {
-		echo( "<script> location.href ='admin/index.php';</script>" );
+		echo( "<script> location.href ='guru/index.php';</script>" );
 	}
 } else if ( isset( $_SESSION[ 's_id_orangtua' ] ) ) {
-	echo( "<script> location.href ='admin/index.php';</script>" );
+	echo( "<script> location.href ='orangtua/index.php';</script>" );
 } else {
 	?>
 	<!DOCTYPE html>

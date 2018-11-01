@@ -7,24 +7,26 @@
 	<meta name="description" content="">
 	<meta name="author" content="Dashboard">
 	<meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
-	<title>ADMIN</title>
+	<title>GURU</title>
 
 	<!-- Favicons -->
 	<link href="../halaman_utama/img/favicon.png" rel="icon">
 	<link href="../halaman_utama/img/apple-touch-icon.png" rel="apple-touch-icon">
+	
 
 	<!-- Bootstrap core CSS -->
 	<link href="../halaman_utama/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<!--external css-->
 	<link href="../halaman_utama/lib/font-awesome/css/font-awesome.css" rel="stylesheet"/>
-	<link href="../halaman_utama/lib/advanced-datatable/css/demo_page.css" rel="stylesheet"/>
-	<link href="../halaman_utama/lib/advanced-datatable/css/demo_table.css" rel="stylesheet"/>
-	<link rel="stylesheet" href="../halaman_utama/lib/advanced-datatable/css/DT_bootstrap.css"/>
-	<link rel="stylesheet" type="text/css" href="../halaman_utama/lib/gritter/css/jquery.gritter.css" />
 	<!-- Custom styles for this template -->
 	<link href="../halaman_utama/css/style.css" rel="stylesheet">
 	<link href="../halaman_utama/css/style-responsive.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<!--	<script async defer type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&callback=initMap&libraries=geometry"></script>-->
+	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&libraries=geometry"></script>
+	
+
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	
 
 	<!-- =======================================================
