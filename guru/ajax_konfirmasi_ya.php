@@ -10,5 +10,5 @@ if ( $_POST[ 'pesan' ] != "baterai lemah" ) {
 	$result_insert_laporan = mysqli_query( $link, $query_insert_laporan );
 }
 
-
+mysqli_close($link);
 ?>

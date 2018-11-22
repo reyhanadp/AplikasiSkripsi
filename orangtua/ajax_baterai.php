@@ -3,12 +3,12 @@ session_start();
 require( '../koneksi.php' );
 $link = koneksi_db();
 
-$sql_siswa = "SELECT `nis`, `nama`, `foto`, `baterai`, `status`, jam_masuk, jam_keluar, lat, longitude FROM `tb_siswa` join tb_kelas on tb_siswa . id_kelas = tb_kelas . id_kelas WHERE `status` != 1";
+$sql_siswa = "SELECT `nis`, `nama`, `foto`, `baterai`, `status`, jam_masuk, jam_keluar, lat, longitude FROM `tb_siswa`join tb_kelas on tb_siswa . id_kelas = tb_kelas . id_kelas WHERE `status` != 1 AND id_orangtua = '".$_SESSION['s_id_orangtua']."'";
 $res_siswa = mysqli_query( $link, $sql_siswa );
 
 ?>
 
-<p class="centered"><a href="#"><img src="../foto/guru/<?php echo $_SESSION['s_foto']; ?>" class="img-circle" width="80"></a>
+<p class="centered"><a href="#"><img src="../foto/orangtua/<?php echo $_SESSION['s_foto']; ?>" class="img-circle" width="80"></a>
 </p>
 <h5 class="centered">
 	<?php echo $_SESSION['s_nama']; ?>

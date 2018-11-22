@@ -44,6 +44,7 @@ while ( $data_ambil_konfirmasi = mysqli_fetch_array( $result_ambil_konfirmasi ) 
 					<div class="col-md-4">
 						<?php
 						if ( $data_ambil_konfirmasi[ 'status' ] == 0 ) {
+							//konfirmasi
 							?>
 						<div class="row">
 							<div class="col-md-12">
@@ -61,6 +62,7 @@ while ( $data_ambil_konfirmasi = mysqli_fetch_array( $result_ambil_konfirmasi ) 
 						</div>
 						<?php
 						} else if ( $data_ambil_konfirmasi[ 'status' ] == 1 && $data_ambil_waktu_ketemu[ 'waktu_ketemu' ] == NULL ) {
+							//konfirmasi ketemu
 							$query_ambil_nama_guru = "select * from tb_guru where nuptk='" . $data_ambil_konfirmasi[ 'nuptk' ] . "'";
 							$result_ambil_nama_guru = mysqli_query( $link, $query_ambil_nama_guru );
 							$data_ambil_nama_guru = mysqli_fetch_array( $result_ambil_nama_guru );

@@ -18,6 +18,7 @@ if ( $temp == "O" || $temp == "o" ) {
 			$nama = $data[ 'nama' ];
 			$no_telp = $data[ 'no_telp' ];
 			$alamat = $data[ 'alamat' ];
+			$foto = $data[ 'foto' ];
 		}
 
 		$_SESSION[ 's_id_orangtua' ] = $id_orangtua;
@@ -25,6 +26,7 @@ if ( $temp == "O" || $temp == "o" ) {
 		$_SESSION[ 's_nama' ] = $nama;
 		$_SESSION[ 's_no_telp' ] = $no_telp;
 		$_SESSION[ 's_alamat' ] = $alamat;
+		$_SESSION[ 's_foto' ] = $foto;
 		echo( "<script> location.href ='../orangtua/index.php';</script>" );
 	} else {
 		$_SESSION[ 's_pesan' ] = "Email atau Password Salah";

@@ -617,7 +617,7 @@ if ( isset( $_SESSION[ 's_id_orangtua' ] ) ) {
 										<select id="cari_siswa" name="cari_murid" class="form-control">
 											<option value="">Cari Siswa...</option>
 											<?php
-											$sql_cari_siswa = "SELECT `nis`,`nama` FROM `tb_siswa` WHERE `status` != 1";
+											$sql_cari_siswa = "SELECT `nis`,`nama` FROM `tb_siswa` WHERE `status` != 1 AND id_orangtua = '".$_SESSION['s_id_orangtua']."'";
 											$result_cari_siswa = mysqli_query( $link, $sql_cari_siswa );
 											while ( $data_cari_siswa = mysqli_fetch_array( $result_cari_siswa ) ) {
 												?>
@@ -818,63 +818,9 @@ if ( isset( $_SESSION[ 's_id_orangtua' ] ) ) {
 					this.setMap( map );
 				}
 
-				CustomMarkerGuru.prototype = new google.maps.OverlayView();
-
-				CustomMarkerGuru.prototype.draw = function () {
-					// Check if the div has been created.
-					//			alert(this.div_);
-					var div = this.div_;
-
-					if ( !div ) {
-						// Create a overlay text DIV
-						div = this.div_ = document.createElement( 'div' );
-						// Create the DIV representing our CustomMarker
-						div.className = "customMarkerGuru"
-
-
-						var img = document.createElement( "img" );
-
-						img.src = this.imageSrc;
-						div.appendChild( img );
-						google.maps.event.addDomListener( div, "click", function ( event ) {
-							google.maps.event.trigger( me, "click" );
-						} );
-
-
-						// Then add the overlay to the DOM
-						var panes = this.getPanes();
-						panes.overlayImage.appendChild( div );
-					}
-
-					// Position the overlay 
-					var point = this.getProjection().fromLatLngToDivPixel( this.latlng_ );
-					if ( point ) {
-						div.style.left = point.x + 'px';
-						div.style.top = point.y + 'px';
-					}
-				};
-
-				CustomMarkerGuru.prototype.remove = function () {
-					// Check if the overlay was on the map and needs to be removed.
-					//					this.div_.parentNode.removeChild( this.div_ );
-					//					this.div_ = null;
-					if ( this.div_ ) {
-						this.div_.parentNode.removeChild( this.div_ );
-						this.div_ = null;
-					}
-				};
-
-				CustomMarkerGuru.prototype.getPosition = function () {
-					return this.latlng_;
-				};
-
 				function clearOverlays() {
 					for ( var i = 0; i < markersArray.length; i++ ) {
 						markersArray[ i ].setMap( null );
-					}
-
-					for ( var i = 0; i < guruMarkerArray.length; i++ ) {
-						guruMarkerArray[ i ].setMap( null );
 					}
 				}
 
@@ -1011,8 +957,8 @@ if ( isset( $_SESSION[ 's_id_orangtua' ] ) ) {
 				var i = 0;
 
 				function updateMaps() {
-					load_notification();
-					notifikasi_sms_gateway();
+//					load_notification();
+//					notifikasi_sms_gateway();
 
 					var cek_jarak_guru_siswa;
 					if ( i != 0 ) {
@@ -1022,7 +968,7 @@ if ( isset( $_SESSION[ 's_id_orangtua' ] ) ) {
 						i = i + 1;
 					}
 
-					navigator.geolocation.getCurrentPosition( menampilkan_posisi_guru );
+//					navigator.geolocation.getCurrentPosition( menampilkan_posisi_guru );
 
 					var data = 'data_siswa.php';
 
@@ -1040,170 +986,16 @@ if ( isset( $_SESSION[ 's_id_orangtua' ] ) ) {
 								var overlay = new CustomMarker( lat_lng, map, "../foto/siswa/" + marker.attr( "foto" ) );
 
 								markersArray.push( overlay );
-
-								var myLatlng = new google.maps.LatLng( marker.attr( "lat" ), marker.attr( "lng" ) );
-
-
-								for ( var q = 0; q < jml_polygon; q++ ) {
-									var hasil = google.maps.geometry.poly.containsLocation( myLatlng, geofencing_polygon[ q ] ) ? "didalam" : "diluar";
-
-									if ( hasil == "didalam" ) {
-										break;
-									}
-								}
-
-								var cek_jarak_guru_siswa = 1;
-
-								$.ajax( {
-									type: 'post',
-									url: 'ajax_posisi_guru.php',
-									async: false,
-									dataType: "json",
-									success: function ( data_posisi_guru ) {
-										var jml_posisi_guru = data_posisi_guru.length;
-
-										for ( var j = 0; j < jml_posisi_guru; j++ ) {
-
-											var posisi_guru = new google.maps.LatLng( data_posisi_guru[ j ][ "latitude" ], data_posisi_guru[ j ][ "longitude" ] );
-
-											var jarak = Math.round( google.maps.geometry.spherical.computeDistanceBetween( myLatlng, posisi_guru ) );
-
-											if ( jarak < 10 ) {
-												cek_jarak_guru_siswa = 0;
-											}
-										}
-									}
-								} );
-
-
-								if ( marker.attr( "status" ) == 0 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "0 jadi 4";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "0 jadi 2";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "0 jadi 3";
-												}
-											}
-
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "0 jadi 3";
-											}
-										}
-									} else if ( marker.attr( "cek_jadwal" ) == "no" ) {
-										ubah_status = "0 jadi 5";
-									}
-								} else if ( marker.attr( "status" ) == 2 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "2 jadi 4";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "2 jadi 3";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "2 jadi 0";
-												}
-											}
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "2 jadi 3";
-											} else if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "2 jadi 0";
-											}
-										}
-									}
-								} else if ( marker.attr( "status" ) == 3 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "3 jadi 4";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "3 jadi 2";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "3 jadi 0";
-												}
-											}
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "3 jadi 0";
-											}
-										}
-									} else if ( marker.attr( "cek_jadwal" ) == "no" ) {
-										ubah_status = "3 jadi 5";
-									}
-								} else if ( marker.attr( "status" ) == 4 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "4 jadi 2";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "4 jadi 3";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "4 jadi 0";
-												}
-											}
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "4 jadi 3";
-											} else if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "4 jadi 0";
-											}
-										}
-									}
-								} else if ( marker.attr( "status" ) == 5 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "5 jadi 3";
-											} else if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "5 jadi 0";
-											}
-										}
-									}
-								}
-
-								if ( ubah_status != "tetap" ) {
-
-									$.ajax( {
-										type: 'post',
-										url: 'ajax_update_status.php',
-										async: false,
-										data: {
-											nis: marker.attr( "nis" ),
-											kelas: marker.attr( "kelas" ),
-											nama: marker.attr( "nama" ),
-											perintah: ubah_status
-										},
-										success: function ( data ) {
-											load_notification();
-										}
-									} );
-								}
 							} );
 					} );
 
 				}
 			</script>
 			<?php
-			$query_ambil_data_guru = "SELECT `nuptk`,`nama`,foto FROM `tb_guru` where nuptk!='" . $_SESSION[ 's_nuptk' ] . "'";
+			$query_ambil_data_guru = "SELECT `nuptk`,`nama`,foto FROM `tb_guru`";
 			$result_ambil_data_guru = mysqli_query( $link, $query_ambil_data_guru );
 
-			$query_ambil_data_orangtua = "SELECT `id_orangtua`,`nama`,foto FROM `tb_orangtua`";
+			$query_ambil_data_orangtua = "SELECT `id_orangtua`,`nama`,foto FROM `tb_orangtua` where id_orangtua != '".$_SESSION['s_id_orangtua']."'";
 			$result_ambil_data_orangtua = mysqli_query( $link, $query_ambil_data_orangtua );
 
 			?>

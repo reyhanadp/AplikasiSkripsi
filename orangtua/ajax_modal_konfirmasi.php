@@ -3,14 +3,14 @@ session_start();
 require( '../koneksi.php' );
 $link = koneksi_db();
 
-$sql_update_status = "UPDATE `tb_status` SET `status`='1' WHERE `id_user`='".$_SESSION['s_id_orangtua']."'";
-$res_update_status = mysqli_query($link,$sql_update_status);
+//$sql_update_status = "UPDATE `tb_status` SET `status`='1' WHERE `id_user`='".$_SESSION['s_id_orangtua']."'";
+//$res_update_status = mysqli_query($link,$sql_update_status);
 
-$query_ambil_konfirmasi = "select tb_notifikasi.nis, nama, foto , kelas, tingkatan, tb_notifikasi.status, tb_notifikasi.pesan_notif, id_notifikasi, tb_notifikasi.nuptk, waktu, tb_siswa.lat, tb_siswa.longitude from tb_notifikasi join tb_siswa on tb_notifikasi.nis=tb_siswa.nis JOIN tb_kelas on tb_siswa.id_kelas=tb_kelas.id_kelas order by tb_notifikasi.id_notifikasi DESC";
+$query_ambil_konfirmasi = "select tb_notifikasi.nis, nama, foto , kelas, tingkatan, tb_notifikasi.status, tb_notifikasi.pesan_notif, id_notifikasi, tb_notifikasi.nuptk, waktu, tb_siswa.lat, tb_siswa.longitude from tb_notifikasi join tb_siswa on tb_notifikasi.nis=tb_siswa.nis JOIN tb_kelas on tb_siswa.id_kelas=tb_kelas.id_kelas where tb_siswa.id_orangtua='".$_SESSION['s_id_orangtua']."' AND tb_notifikasi.status=1 ORDER BY tb_notifikasi.id_notifikasi DESC";
 $result_ambil_konfirmasi = mysqli_query( $link, $query_ambil_konfirmasi );
 while ( $data_ambil_konfirmasi = mysqli_fetch_array( $result_ambil_konfirmasi ) ) {
 
-	$query_ambil_waktu_ketemu = "select * from tb_notifikasi join tb_laporan on tb_notifikasi.waktu=tb_laporan.waktu_kabur where tb_laporan.waktu_kabur='" . $data_ambil_konfirmasi[ 'waktu' ] . "'";
+	$query_ambil_waktu_ketemu = "select * from tb_notifikasi join tb_laporan on tb_notifikasi.waktu=tb_laporan.waktu_kabur where tb_laporan.waktu_kabur='" . $data_ambil_konfirmasi[ 'waktu' ] . "' and tb_notifikasi.nis=(select nis from tb_siswa where id_orangtua='".$_SESSION['s_id_orangtua']."') ORDER BY id_laporan";
 	$result_ambil_waktu_ketemu = mysqli_query( $link, $query_ambil_waktu_ketemu );
 	$ketemu_waktu = mysqli_num_rows( $result_ambil_waktu_ketemu );
 	$data_ambil_waktu_ketemu = mysqli_fetch_array( $result_ambil_waktu_ketemu );

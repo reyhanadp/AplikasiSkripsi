@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0
+-- version 4.7.4
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Waktu pembuatan: 22 Nov 2018 pada 06.49
--- Versi server: 10.1.31-MariaDB
--- Versi PHP: 7.2.4
+-- Generation Time: 22 Nov 2018 pada 02.02
+-- Versi Server: 10.1.29-MariaDB
+-- PHP Version: 7.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET AUTOCOMMIT = 0;
@@ -225,8 +225,7 @@ INSERT INTO `tb_laporan` (`id_laporan`, `nis`, `waktu_kabur`, `waktu_ketemu`, `l
 (8, '112', '2018-07-16 08:59:14', '2018-07-30 06:46:23', -6.930792, 107.65448),
 (9, '112', '2018-08-02 21:28:26', '2018-10-30 04:26:27', -6.930387, 107.654664),
 (10, '112', '2018-08-02 22:19:41', NULL, NULL, NULL),
-(11, '112', '2018-08-02 22:59:24', NULL, NULL, NULL),
-(13, '112', '2018-11-20 20:34:52', '2018-11-22 01:49:10', -6.929884, 107.65467);
+(11, '112', '2018-08-02 22:59:24', NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -261,9 +260,9 @@ INSERT INTO `tb_notifikasi` (`id_notifikasi`, `nis`, `nuptk`, `pesan_notif`, `wa
 (16, '112', NULL, 'keluar sekolah', '2018-11-20 15:12:40', 0),
 (17, '112', NULL, 'baterai lemah', '2018-11-20 20:29:02', 0),
 (18, '112', NULL, 'keluar sekolah', '2018-11-20 20:32:10', 0),
-(19, '112', '112', 'keluar sekolah', '2018-11-20 20:34:52', 1),
-(20, '113', '112', 'keluar sekolah', '2018-11-20 22:40:21', 1),
-(21, '113', '112', 'baterai lemah', '2018-11-20 22:41:01', 1);
+(19, '112', NULL, 'keluar sekolah', '2018-11-20 20:34:52', 0),
+(20, '112', NULL, 'keluar sekolah', '2018-11-20 22:40:21', 0),
+(21, '112', NULL, 'baterai lemah', '2018-11-20 22:41:01', 0);
 
 -- --------------------------------------------------------
 
@@ -324,7 +323,7 @@ INSERT INTO `tb_pesan` (`id_pesan`, `id_pengirim`, `id_penerima`, `isi_pesan`, `
 (10, '112', '111', 'hei baki', '2018-11-05 15:06:47', '0'),
 (11, '112', '111', 'oiii baki', '2018-11-05 15:08:41', '0'),
 (12, '112', 'O101', 'tes', '2018-11-22 05:07:32', '0'),
-(13, '1010', '112', 'testes', '2018-11-22 05:27:16', '1'),
+(13, '1010', '112', 'testes', '2018-11-22 05:27:16', '0'),
 (14, '112', 'O112', 'wkwk', '2018-11-22 07:00:04', '0');
 
 -- --------------------------------------------------------
@@ -356,8 +355,7 @@ CREATE TABLE `tb_siswa` (
 --
 
 INSERT INTO `tb_siswa` (`nis`, `nama`, `alamat`, `tempat_lahir`, `tgl_lahir`, `password`, `id_kelas`, `id_orangtua`, `foto`, `lat`, `longitude`, `baterai`, `update_time`, `status`, `nuptk`) VALUES
-('112', 'Asep', 'sekeloa', 'Garut', '2018-05-03', '112', 'S1', 'O321', 'foto-default.jpg', -6.929884, 107.65467, 10, NULL, '4', '112'),
-('113', 'Maskun', 'Jl Cibaduyut', 'Bandung', '2000-08-01', '113', 'S8', 'O112', 'new_times4_1540632619.jpg', -6.930405, 107.654227, 30, NULL, '5', '112');
+('112', 'Asep', 'sekeloa', 'Garut', '2018-05-03', '112', 'S1', 'O321', 'foto-default.jpg', -6.929884, 107.65467, 10, NULL, '4', '112');
 
 -- --------------------------------------------------------
 
@@ -377,6 +375,33 @@ CREATE TABLE `tb_status` (
 --
 
 INSERT INTO `tb_status` (`id_status`, `id_notifikasi`, `id_user`, `status`) VALUES
+(67, 1, '111', 1),
+(68, 5, '111', 1),
+(70, 7, '111', 1),
+(71, 8, '111', 1),
+(72, 9, '111', 1),
+(73, 10, '111', 1),
+(74, 11, '111', 1),
+(75, 12, '111', 0),
+(76, 13, '111', 0),
+(87, 1, 'BKS', 0),
+(88, 5, 'BKS', 0),
+(90, 7, 'BKS', 0),
+(91, 8, 'BKS', 0),
+(92, 9, 'BKS', 0),
+(93, 10, 'BKS', 0),
+(94, 11, 'BKS', 0),
+(95, 12, 'BKS', 0),
+(96, 13, 'BKS', 0),
+(97, 1, '1010', 1),
+(98, 5, '1010', 1),
+(100, 7, '1010', 1),
+(101, 8, '1010', 1),
+(102, 9, '1010', 1),
+(103, 10, '1010', 1),
+(104, 11, '1010', 1),
+(105, 12, '1010', 1),
+(106, 13, '1010', 1),
 (173, 1, '112', 1),
 (174, 5, '112', 1),
 (175, 7, '112', 1),
@@ -392,45 +417,27 @@ INSERT INTO `tb_status` (`id_status`, `id_notifikasi`, `id_user`, `status`) VALU
 (229, 21, '112', 1),
 (230, 17, '112', 1),
 (231, 16, '112', 1),
-(232, 18, '112', 1),
-(233, 21, 'O112', 1),
-(234, 1, '', 0),
-(235, 5, '', 0),
-(236, 7, '', 0),
-(237, 8, '', 0),
-(238, 9, '', 0),
-(239, 10, '', 0),
-(240, 11, '', 0),
-(241, 12, '', 0),
-(242, 13, '', 0),
-(243, 15, '', 0),
-(244, 16, '', 0),
-(245, 17, '', 0),
-(246, 18, '', 0),
-(247, 19, '', 0),
-(248, 20, '', 0),
-(249, 21, '', 0),
-(250, 20, 'O112', 1);
+(232, 18, '112', 1);
 
 --
 -- Indexes for dumped tables
 --
 
 --
--- Indeks untuk tabel `tb_device`
+-- Indexes for table `tb_device`
 --
 ALTER TABLE `tb_device`
   ADD PRIMARY KEY (`id_device`),
   ADD KEY `nuptk` (`nuptk`);
 
 --
--- Indeks untuk tabel `tb_geofencing`
+-- Indexes for table `tb_geofencing`
 --
 ALTER TABLE `tb_geofencing`
   ADD PRIMARY KEY (`id_geofencing`);
 
 --
--- Indeks untuk tabel `tb_guru`
+-- Indexes for table `tb_guru`
 --
 ALTER TABLE `tb_guru`
   ADD PRIMARY KEY (`nuptk`),
@@ -438,33 +445,33 @@ ALTER TABLE `tb_guru`
   ADD KEY `fk_kode_jabatan` (`kode_jabatan`);
 
 --
--- Indeks untuk tabel `tb_jabatan`
+-- Indexes for table `tb_jabatan`
 --
 ALTER TABLE `tb_jabatan`
   ADD PRIMARY KEY (`kode_jabatan`);
 
 --
--- Indeks untuk tabel `tb_kelas`
+-- Indexes for table `tb_kelas`
 --
 ALTER TABLE `tb_kelas`
   ADD PRIMARY KEY (`id_kelas`);
 
 --
--- Indeks untuk tabel `tb_koordinat`
+-- Indexes for table `tb_koordinat`
 --
 ALTER TABLE `tb_koordinat`
   ADD PRIMARY KEY (`id_koordinat`),
   ADD KEY `id_geofencing` (`id_geofencing`);
 
 --
--- Indeks untuk tabel `tb_laporan`
+-- Indexes for table `tb_laporan`
 --
 ALTER TABLE `tb_laporan`
   ADD PRIMARY KEY (`id_laporan`),
   ADD KEY `fk_nis_kabur` (`nis`);
 
 --
--- Indeks untuk tabel `tb_notifikasi`
+-- Indexes for table `tb_notifikasi`
 --
 ALTER TABLE `tb_notifikasi`
   ADD PRIMARY KEY (`id_notifikasi`),
@@ -472,19 +479,19 @@ ALTER TABLE `tb_notifikasi`
   ADD KEY `nuptk` (`nuptk`);
 
 --
--- Indeks untuk tabel `tb_orangtua`
+-- Indexes for table `tb_orangtua`
 --
 ALTER TABLE `tb_orangtua`
   ADD PRIMARY KEY (`id_orangtua`);
 
 --
--- Indeks untuk tabel `tb_pesan`
+-- Indexes for table `tb_pesan`
 --
 ALTER TABLE `tb_pesan`
   ADD PRIMARY KEY (`id_pesan`);
 
 --
--- Indeks untuk tabel `tb_siswa`
+-- Indexes for table `tb_siswa`
 --
 ALTER TABLE `tb_siswa`
   ADD PRIMARY KEY (`nis`),
@@ -493,51 +500,51 @@ ALTER TABLE `tb_siswa`
   ADD KEY `fk_nuptk` (`nuptk`);
 
 --
--- Indeks untuk tabel `tb_status`
+-- Indexes for table `tb_status`
 --
 ALTER TABLE `tb_status`
   ADD PRIMARY KEY (`id_status`),
   ADD KEY `fk_notifikasi` (`id_notifikasi`);
 
 --
--- AUTO_INCREMENT untuk tabel yang dibuang
+-- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT untuk tabel `tb_geofencing`
+-- AUTO_INCREMENT for table `tb_geofencing`
 --
 ALTER TABLE `tb_geofencing`
   MODIFY `id_geofencing` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
--- AUTO_INCREMENT untuk tabel `tb_koordinat`
+-- AUTO_INCREMENT for table `tb_koordinat`
 --
 ALTER TABLE `tb_koordinat`
   MODIFY `id_koordinat` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=243;
 
 --
--- AUTO_INCREMENT untuk tabel `tb_laporan`
+-- AUTO_INCREMENT for table `tb_laporan`
 --
 ALTER TABLE `tb_laporan`
-  MODIFY `id_laporan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `id_laporan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
--- AUTO_INCREMENT untuk tabel `tb_notifikasi`
+-- AUTO_INCREMENT for table `tb_notifikasi`
 --
 ALTER TABLE `tb_notifikasi`
   MODIFY `id_notifikasi` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
--- AUTO_INCREMENT untuk tabel `tb_pesan`
+-- AUTO_INCREMENT for table `tb_pesan`
 --
 ALTER TABLE `tb_pesan`
   MODIFY `id_pesan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
--- AUTO_INCREMENT untuk tabel `tb_status`
+-- AUTO_INCREMENT for table `tb_status`
 --
 ALTER TABLE `tb_status`
-  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=251;
+  MODIFY `id_status` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=233;
 
 --
 -- Ketidakleluasaan untuk tabel pelimpahan (Dumped Tables)
