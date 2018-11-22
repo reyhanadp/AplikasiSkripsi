@@ -58,7 +58,7 @@
 		 */
 		var nCloneTh = document.createElement( 'th' );
 		var nCloneTd = document.createElement( 'td' );
-		nCloneTd.innerHTML = '<?php if(isset($_GET['menu'])){ if($_GET['menu']!='jabatan' && $_GET['menu']!='kelas'){ ?><img src="../foto/mata.png" class="mata">&nbsp;&nbsp;<?php }}?><img src="../foto/edit.png" class="edit">';
+		nCloneTd.innerHTML = '<?php if(isset($_GET['menu'])){ if($_GET['menu']!='jabatan' && $_GET['menu']!='kelas' && $_GET['menu']!='device'){ ?><img src="../foto/mata.png" class="mata">&nbsp;&nbsp;<?php }}?><img src="../foto/edit.png" class="edit">';
 		nCloneTd.className = "center";
 
 		$( '#hidden-table-info thead tr' ).each( function () {

@@ -344,6 +344,42 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 
 
 
+	} else if ( isset( $_GET[ 'idDevice' ] ) ) {
+		$id_device = $_GET[ 'idDevice' ];
+
+		$nuptk=$_POST['nuptk'];
+		$tipe=$_POST['tipe'];
+		$nama_device = $_POST['nama_device'];
+		$status = $_POST['status'];
+		
+		if($status == "aktif"){
+			$sql_update_status = "UPDATE `tb_device` SET `status`='tidak aktif'";
+			$res_update_status = mysqli_query($link,$sql_update_status);
+		}
+
+		$sql = "UPDATE `tb_device` SET `nuptk`='$nuptk',`tipe`='$tipe',`nama`='$nama_device',`status`='$status' WHERE `id_device`='$id_device';";
+
+		$res = mysqli_query( $link, $sql );
+
+
+		if ( $res ) {
+			$_SESSION[ 's_pesan' ] = "Data Berhasil Diubah!"
+			?>
+			<script language="javascript">
+				document.location.href = "index.php?menu=device&action=tampil";
+			</script>
+			<?php
+		} else {
+			$_SESSION[ 's_pesan' ] = "Data Gagal Diubah!"
+			?>
+			<script language="javascript">
+				document.location.href = "index.php?menu=device&action=tampil";
+			</script>
+			<?php
+		}
+
+
+
 	}
 }
 

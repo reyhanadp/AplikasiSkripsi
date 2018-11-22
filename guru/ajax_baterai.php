@@ -3,7 +3,7 @@ session_start();
 require( '../koneksi.php' );
 $link = koneksi_db();
 
-$sql_siswa = "SELECT `nis`, `nama`, `foto`, `baterai`, `status`, jam_masuk, jam_keluar FROM `tb_siswa`
+$sql_siswa = "SELECT `nis`, `nama`, `foto`, `baterai`, `status`, jam_masuk, jam_keluar, lat, longitude FROM `tb_siswa`
 join tb_kelas on tb_siswa . id_kelas = tb_kelas . id_kelas WHERE `status` != 1";
 $res_siswa = mysqli_query( $link, $sql_siswa );
 
@@ -22,7 +22,7 @@ while ( $data_siswa = mysqli_fetch_array( $res_siswa ) ) {
 
 	?>
 <li class="mt">
-	<a href="#detail_siswa" id="custId" data-toggle="modal" data-id="<?php echo $data_siswa['nis'];?>">
+	<a href="#detail_siswa" id="custId" data-toggle="modal" data-id="<?php echo $data_siswa['nis'];?>" data-latitude="<?php echo $data_siswa['lat']; ?>" data-longitude="<?php echo $data_siswa['longitude']; ?>">
 		<div class="row">
 			<div class="col-md-4 col-sm-4">
 				<img class="img-rounded" src="../foto/siswa/<?php echo $data_siswa['foto'];?>" width="65" height="75">

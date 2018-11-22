@@ -46,6 +46,7 @@
 	var curposdiv;
 	var curseldiv;
 	var geofencing_polygon = [];
+	var geofencing_rectangle = [];
 
 	function initMap() {
 		// The location of Uluru
@@ -78,10 +79,13 @@
 			dataType: "json",
 			success: function ( data ) {
 				var jmlGeofencing = data.length;
+				var b = 0;
+				var c = 0;
 
 				//variabel untuk menampung tabel yang akan digenerasika
 				if ( jmlGeofencing != 0 ) {
 					for ( var a = 0; a < jmlGeofencing; a++ ) {
+
 						$.ajax( {
 							type: 'post',
 							url: 'ajax_lokasi.php',
@@ -91,40 +95,66 @@
 								id_geofencing: data[ a ][ "id_geofencing" ]
 							},
 							dataType: "json",
-							success: function ( data ) {
-								var jmlKoordinat = data.length;
+							success: function ( data_koordinat ) {
+								var jmlKoordinat = data_koordinat.length;
 
-								var triangleCoords = [];
-								for ( var i = 0; i < jmlKoordinat; i++ ) {
-									triangleCoords.push( {
-										lat: parseFloat( data[ i ][ "latitude" ] ),
-										lng: parseFloat( data[ i ][ "longitude" ] )
+								//validasi polygon atau rectangle
+								if ( data[ a ][ "bentuk" ] == "polygon" ) {
+									var triangleCoords = [];
+									for ( var i = 0; i < jmlKoordinat; i++ ) {
+										triangleCoords.push( {
+											lat: parseFloat( data_koordinat[ i ][ "latitude" ] ),
+											lng: parseFloat( data_koordinat[ i ][ "longitude" ] )
+										} );
+									}
+
+									geofencing_polygon[ b ] = new google.maps.Polygon( {
+										paths: triangleCoords,
+										strokeColor: '#FF0000',
+										strokeOpacity: 0.8,
+										strokeWeight: 3,
+										fillColor: '#FF0000',
+										fillOpacity: 0.35,
+										id_geofencing: data[ a ][ "id_geofencing" ],
+										map: map
 									} );
 
+									geofencing_polygon[ b ].addListener( 'click', function ( event ) {
+										clearSelection();
+										this.setEditable( true );
+										selectedShape = this;
+										button.disabled = !button.disabled;
+									} );
+									b++;
+								} else if ( data[ a ][ "bentuk" ] == "rectangle" ) {
+									geofencing_rectangle[ c ] = new google.maps.Rectangle( {
+										strokeColor: '#FF0000',
+										strokeOpacity: 0.8,
+										strokeWeight: 2,
+										fillColor: '#FF0000',
+										fillOpacity: 0.35,
+										id_geofencing: data[ a ][ "id_geofencing" ],
+										map: map,
+										bounds: {
+											north: parseFloat( data_koordinat[ 0 ][ "latitude" ] ),
+											south: parseFloat( data_koordinat[ 2 ][ "latitude" ] ),
+											east: parseFloat( data_koordinat[ 1 ][ "longitude" ] ),
+											west: parseFloat( data_koordinat[ 3 ][ "longitude" ] )
+										}
+									} );
 
+									geofencing_rectangle[ c ].addListener( 'click', function ( event ) {
+										clearSelection();
+										this.setEditable( true );
+										selectedShape = this;
+										button.disabled = !button.disabled;
+									} );
+
+									c++;
 								}
-
-
-								geofencing_polygon[ a ] = new google.maps.Polygon( {
-									paths: triangleCoords,
-									strokeColor: '#FF0000',
-									strokeOpacity: 0.8,
-									strokeWeight: 3,
-									fillColor: '#FF0000',
-									fillOpacity: 0.35,
-									map: map
-								} );
-
-
-
-								geofencing_polygon[ a ].addListener( 'click', function ( event ) {
-									clearSelection();
-									this.setEditable( true );
-									selectedShape = this;
-									button.disabled = !button.disabled;
-								} );
 							}
 						} );
+
 					}
 				}
 			}
@@ -164,115 +194,180 @@
 			var konfirmasi = confirm( "Apakah Anda Yakin Menyimpan Geofencing?" );
 
 			if ( konfirmasi == true ) {
+				var panjang_polygon = geofencing_polygon.length;
+				var panjang_rectangle = geofencing_rectangle.length;
 
-				$.ajax( {
-					type: 'post',
-					url: 'ajax_hapus_geofencing.php',
-					async: false,
-					data: {
-						jenis: 'sekolah'
-					},
-					dataType: "json",
-					success: function ( data_hapus_geofencing ) {
-						var panjang_polygon = geofencing_polygon.length;
+				for ( var i = 0; i < panjang_polygon; i++ ) {
+					if ( geofencing_polygon[ i ].getMap() != null ) {
 
-						for ( var i = 0; i < panjang_polygon; i++ ) {
-							if ( geofencing_polygon[ i ].getMap() != null ) {
+						$.ajax( {
+							type: 'post',
+							url: 'ajax_hapus_koordinat.php',
+							async: false,
+							data: {
+								jenis: 'sekolah',
+								id_geofencing: geofencing_polygon[ i ].id_geofencing
+							},
+							dataType: "json",
+							success: function ( data_hapus_koordinat ) {
+								for ( var j = 0; j < geofencing_polygon[ i ].getPath().getLength(); j++ ) {
+									$.ajax( {
+										type: 'post',
+										url: 'ajax_simpan_koordinat.php',
+										async: false,
+										data: {
+											jenis: 'poly',
+											lat: geofencing_polygon[ i ].getPath().getAt( j ).lat(),
+											lng: geofencing_polygon[ i ].getPath().getAt( j ).lng(),
+											id_geofencing: geofencing_polygon[ i ].id_geofencing
+										},
+										dataType: "json",
+										success: function ( data ) {
+
+										}
+									} );
+								}
+							}
+						} );
+					} else if ( geofencing_polygon[ i ].getMap() == null ) {
+						$.ajax( {
+							type: 'post',
+							url: 'ajax_ubah_status_geofencing.php',
+							async: false,
+							data: {
+								jenis: 'sekolah',
+								id_geofencing: geofencing_polygon[ i ].id_geofencing
+							},
+							dataType: "json",
+							success: function ( data_hapus_koordinat ) {
+
+							}
+						} );
+					}
+				}
+
+				for ( var i = 0; i < panjang_rectangle; i++ ) {
+					if ( geofencing_rectangle[ i ].getMap() != null ) {
+						$.ajax( {
+							type: 'post',
+							url: 'ajax_hapus_koordinat.php',
+							async: false,
+							data: {
+								jenis: 'sekolah',
+								id_geofencing: geofencing_rectangle[ i ].id_geofencing
+							},
+							dataType: "json",
+							success: function ( data_hapus_koordinat ) {
+
 								$.ajax( {
 									type: 'post',
-									url: 'ajax_simpan_geofencing.php',
+									url: 'ajax_simpan_koordinat.php',
 									async: false,
 									data: {
-										jenis: 'sekolah'
+										jenis: 'rectangle',
+										ne_lat: geofencing_rectangle[i].getBounds().getNorthEast().lat(),
+										ne_lng: geofencing_rectangle[i].getBounds().getNorthEast().lng(),
+										sw_lat: geofencing_rectangle[i].getBounds().getSouthWest().lat(),
+										sw_lng: geofencing_rectangle[i].getBounds().getSouthWest().lng(),
+										id_geofencing: geofencing_rectangle[i].id_geofencing
 									},
 									dataType: "json",
-									success: function ( data_simpan_geofencing ) {
+									success: function ( data ) {
 
-										for ( var j = 0; j < geofencing_polygon[i].getPath().getLength(); j++ ) {
-											$.ajax( {
-												type: 'post',
-												url: 'ajax_simpan_koordinat.php',
-												async: false,
-												data: {
-													jenis: 'poly',
-													lat: geofencing_polygon[ i ].getPath().getAt( j ).lat(),
-													lng: geofencing_polygon[ i ].getPath().getAt( j ).lng(),
-													id_geofencing: data_simpan_geofencing.id_geofencing
-												},
-												dataType: "json",
-												success: function ( data ) {
+									}
+								} );
 
-												}
-											} );
+							}
+						} );
+					} else if ( geofencing_rectangle[ i ].getMap() == null ) {
+						$.ajax( {
+							type: 'post',
+							url: 'ajax_ubah_status_geofencing.php',
+							async: false,
+							data: {
+								jenis: 'sekolah',
+								id_geofencing: geofencing_rectangle[ i ].id_geofencing
+							},
+							dataType: "json",
+							success: function ( data_hapus_koordinat ) {
+
+							}
+						} );
+					}
+				}
+
+				var panjang_shape = all_overlays.length;
+				var bentuk;
+				for ( var i = 0; i < panjang_shape; i++ ) {
+					var shape_baru = all_overlays[ i ].overlay;
+
+					if ( typeof shape_baru.getPath == 'function' ) {
+						bentuk = 'polygon';
+					} else if ( typeof shape_baru.getBounds == 'function' ) {
+						bentuk = 'rectangle';
+					}
+
+
+					$.ajax( {
+						type: 'post',
+						url: 'ajax_simpan_geofencing.php',
+						async: false,
+						data: {
+							jenis: 'sekolah',
+							nama: all_overlays[ i ].nama,
+							bentuk: bentuk
+						},
+						dataType: "json",
+						success: function ( data_simpan_geofencing ) {
+
+							if ( typeof shape_baru.getPath == 'function' ) {
+								for ( var j = 0; j < shape_baru.getPath().getLength(); j++ ) {
+									$.ajax( {
+										type: 'post',
+										url: 'ajax_simpan_koordinat.php',
+										async: false,
+										data: {
+											jenis: 'poly',
+											lat: shape_baru.getPath().getAt( j ).lat(),
+											lng: shape_baru.getPath().getAt( j ).lng(),
+											id_geofencing: data_simpan_geofencing.id_geofencing
+										},
+										dataType: "json",
+										success: function ( data ) {
+
 										}
+									} );
+								}
+							} else if ( typeof shape_baru.getBounds == 'function' ) {
+
+								$.ajax( {
+									type: 'post',
+									url: 'ajax_simpan_koordinat.php',
+									async: false,
+									data: {
+										jenis: 'rectangle',
+										ne_lat: shape_baru.getBounds().getNorthEast().lat(),
+										ne_lng: shape_baru.getBounds().getNorthEast().lng(),
+										sw_lat: shape_baru.getBounds().getSouthWest().lat(),
+										sw_lng: shape_baru.getBounds().getSouthWest().lng(),
+										id_geofencing: data_simpan_geofencing.id_geofencing
+									},
+									dataType: "json",
+									success: function ( data ) {
 
 									}
 								} );
 							}
 						}
-
-						var panjang_shape = all_overlays.length;
-
-						for ( var i = 0; i < panjang_shape; i++ ) {
-							var shape_baru = all_overlays[ i ].overlay;
-							$.ajax( {
-								type: 'post',
-								url: 'ajax_simpan_geofencing.php',
-								async: false,
-								data: {
-									jenis: 'sekolah'
-								},
-								dataType: "json",
-								success: function ( data_simpan_geofencing ) {
-
-									if ( typeof shape_baru.getPath == 'function' ) {
-										for ( var j = 0; j < shape_baru.getPath().getLength(); j++ ) {
-											$.ajax( {
-												type: 'post',
-												url: 'ajax_simpan_koordinat.php',
-												async: false,
-												data: {
-													jenis: 'poly',
-													lat: shape_baru.getPath().getAt( j ).lat(),
-													lng: shape_baru.getPath().getAt( j ).lng(),
-													id_geofencing: data_simpan_geofencing.id_geofencing
-												},
-												dataType: "json",
-												success: function ( data ) {
-
-												}
-											} );
-										}
-									} else if ( typeof shape_baru.getBounds == 'function' ) {
-
-										$.ajax( {
-											type: 'post',
-											url: 'ajax_simpan_koordinat.php',
-											async: false,
-											data: {
-												jenis: 'rectangle',
-												ne_lat: shape_baru.getBounds().getNorthEast().lat(),
-												ne_lng: shape_baru.getBounds().getNorthEast().lng(),
-												sw_lat: shape_baru.getBounds().getSouthWest().lat(),
-												sw_lng: shape_baru.getBounds().getSouthWest().lng(),
-												id_geofencing: data_simpan_geofencing.id_geofencing
-											},
-											dataType: "json",
-											success: function ( data ) {
-
-											}
-										} );
-									}
-								}
-							} );
-						};
-					}
-				} );
+					} );
+				};
 				location.reload();
 			}
 		} );
 
 		google.maps.event.addListener( drawingManager, 'overlaycomplete', function ( e ) {
+			var nama_lokasi = prompt( "Masukan Nama Lokasi Geofencing : " );
+			e.nama = nama_lokasi;
 			all_overlays.push( e );
 			//~ if (e.type != google.maps.drawing.OverlayType.MARKER) {
 			button.disabled = !button.disabled;

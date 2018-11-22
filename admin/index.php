@@ -114,6 +114,8 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 									require( 'menu_kelas.php' );
 								} else if ( $menu == 'geofencing' ) {
 									require( 'menu_geofencing.php' );
+								} else if ( $menu == 'device' ) {
+									require( 'menu_device.php' );
 								}
 							}
 						} else {
@@ -158,6 +160,9 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 				} else if ( ( $_GET[ 'menu' ] == 'geofencing' ) && ( $_GET[ 'action' ] == 'tampil' ) ) {
 					//panggil file tampil data guru
 					require( 'tampil_geofencing.php' );
+				} else if ( ( $_GET[ 'menu' ] == 'device' ) && ( $_GET[ 'action' ] == 'tampil' ) ) {
+					//panggil file tampil data guru
+					require( 'tampil_device.php' );
 				}
 			} else {
 				require( 'tampil_dashboard.php' );

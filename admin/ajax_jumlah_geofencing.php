@@ -7,7 +7,7 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 	if ( $_POST[ 'jenis' ] == "sekolah" ) {
 		$jenis = $_POST[ 'jenis' ];
 
-		$query = "SELECT * FROM `tb_geofencing` where jenis='" . $jenis . "'";
+		$query = "SELECT * FROM `tb_geofencing` where jenis='" . $jenis . "' AND status='0'";
 		$result = mysqli_query( $link, $query );
 		$i = 0;
 		$data_json = array();

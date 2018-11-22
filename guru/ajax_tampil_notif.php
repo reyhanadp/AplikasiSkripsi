@@ -3,18 +3,18 @@ session_start();
 require( '../koneksi.php' );
 $link = koneksi_db();
 
-$sql_ambil_notif = "SELECT tb_notifikasi.id_notifikasi,tb_notifikasi.nis,tb_notifikasi.pesan_notif,tb_notifikasi.waktu,tb_siswa.foto,tb_siswa.nama,TIMESTAMPDIFF(minute,tb_notifikasi.waktu,now()) as menit, DATEDIFF(now(), waktu) AS hari, TIMESTAMPDIFF(MONTH, waktu, now()) AS bulan  FROM `tb_notifikasi` join tb_status on tb_notifikasi.id_notifikasi=tb_status.id_notifikasi JOIN tb_siswa ON tb_notifikasi.nis=tb_siswa.nis WHERE tb_status.status=0 AND tb_status.id_user='" . $_SESSION[ 's_nuptk' ] . "'";
+$sql_ambil_notif = "SELECT tb_status.id_status,tb_notifikasi.id_notifikasi,tb_notifikasi.nis,tb_notifikasi.pesan_notif,tb_notifikasi.waktu,tb_siswa.foto,tb_siswa.nama,TIMESTAMPDIFF(minute,tb_notifikasi.waktu,now()) as menit, DATEDIFF(now(), waktu) AS hari, TIMESTAMPDIFF(MONTH, waktu, now()) AS bulan  FROM `tb_notifikasi` join tb_status on tb_notifikasi.id_notifikasi=tb_status.id_notifikasi JOIN tb_siswa ON tb_notifikasi.nis=tb_siswa.nis WHERE tb_status.status=0 AND tb_status.id_user='" . $_SESSION[ 's_nuptk' ] . "'";
 $res_ambil_notif = mysqli_query( $link, $sql_ambil_notif );
 
 ?>
 <div class="notify-arrow notify-arrow-green"></div>
+
 <li>
 	<p class="green">Anda Mempunyai
 		<?php  echo $_POST['jumlah_notif'];?> Notifkasi</p>
 </li>
 
 <?php
-
 
 while ( $data_ambil_notif = mysqli_fetch_array( $res_ambil_notif ) ) {
 	//menit
@@ -37,7 +37,7 @@ while ( $data_ambil_notif = mysqli_fetch_array( $res_ambil_notif ) ) {
 	?>
 
 	<li>
-		<a href="#konfirmasi_pilih" data-toggle="modal" data-id="<?php echo $data_ambil_notif['id_notifikasi']; ?>">
+		<a href="#konfirmasi_pilih" data-toggle="modal" data-id="<?php echo $data_ambil_notif['id_notifikasi']; ?>" data-status="<?php echo $data_ambil_notif['id_status']; ?>">
                   <span class="photo"><img alt="avatar" src="../foto/siswa/<?php echo $data_ambil_notif['foto'] ?>"></span>
                   <span class="subject">
                   <span class="from">
@@ -74,7 +74,9 @@ while ( $data_ambil_notif = mysqli_fetch_array( $res_ambil_notif ) ) {
 
 	<?php
 }
+mysqli_close($link);
 ?>
+
 <li>
-	<a href="#konfirmasi" data-toggle="modal">Lihat Semua Notifikasi</a>
+	<a href="#konfirmasi" data-toggle="modal"><strong>Lihat Semua Notifikasi</strong></a>
 </li>

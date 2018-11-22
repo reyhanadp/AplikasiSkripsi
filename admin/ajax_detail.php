@@ -83,6 +83,19 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 			'jam_masuk' => $data[ 'jam_masuk' ],
 			'jam_keluar' => $data[ 'jam_keluar' ]
 		);
+	}else if($_POST[ 'jenis' ] == "device"){
+		$sql = "SELECT * FROM `tb_device` where id_device = '" . $_POST[ 'id' ] . "'";
+		$res = mysqli_query( $link, $sql );
+
+		$data = mysqli_fetch_array( $res );
+
+		$data_json = array(
+			'id_device' => $data[ 'id_device' ],
+			'nuptk' => $data[ 'nuptk' ],
+			'tipe' => $data[ 'tipe' ],
+			'nama' => $data[ 'nama' ],
+			'status' => $data[ 'status' ]
+		);
 	}
 }
 

@@ -25,10 +25,10 @@ if ( $temp == "O" || $temp == "o" ) {
 		$_SESSION[ 's_nama' ] = $nama;
 		$_SESSION[ 's_no_telp' ] = $no_telp;
 		$_SESSION[ 's_alamat' ] = $alamat;
-		echo( "<script> location.href ='orangtua/home_ortu.php';</script>" );
+		echo( "<script> location.href ='../orangtua/index.php';</script>" );
 	} else {
 		$_SESSION[ 's_pesan' ] = "Email atau Password Salah";
-		echo( "<script> location.href ='index.php';</script>" );
+		echo( "<script> location.href ='../index.php';</script>" );
 	}
 
 }else{

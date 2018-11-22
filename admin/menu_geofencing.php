@@ -55,3 +55,11 @@
 
 
 </li>
+<li>
+	<a href="index.php?menu=device&action=tampil">
+              <i class="fa fa-mobile-phone"></i>
+              <span>Device SMS Gateway</span>
+              </a>
+
+
+</li>
