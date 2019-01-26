@@ -30,86 +30,97 @@ $result_guru = mysqli_query( $link, $query_guru );
 								<h4 class="modal-title" id="myModalLabel">Tambah Data Guru</h4>
 							</div>
 							<form action="proses_tambah_data_guru.php" method="POST" onSubmit="return confirm('Apakah anda yakin ingin menyimpan data?');" enctype="multipart/form-data">
-							<div class="modal-body">
-								<div class="form-group">
-									<label for="nuptk">NUPTK : </label>
-									<input type="text" class="form-control" name="nuptk" required>
-								</div>
-								<div class="form-group">
-									<label for="nip">NIP : </label>
-									<input type="text" class="form-control" name="nip" required>
-								</div>
-								<div class="form-group">
-									<label for="nama">Nama Guru : </label>
-									<input type="text" class="form-control" name="nama" required>
-								</div>
-								<div class="form-group">
-									<label for="tempat_lahir">Tempat Lahir : </label>
-									<input type="text" class="form-control" name="tempat_lahir" required>
-								</div>
-								<div class="form-group">
-									<label for="tanggal_lahir">Tanggal Lahir : </label>
-									<input type="date" class="form-control" name="tanggal_lahir" required>
-								</div>
-								<div class="form-group">
-									<label for="kelas">Kelas : </label>
-									<select name="id_kelas" class="form-control">
-										<?php
-										//								$link = koneksi_db();
-										$sql = "SELECT * FROM tb_kelas";
-										$res = mysqli_query( $link, $sql );
-										while ( $data_kelas = mysqli_fetch_array( $res ) ) {
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="nuptk">NUPTK : </label>
+										<input type="text" class="form-control" name="nuptk" required>
+									</div>
+									<div class="form-group">
+										<label for="nip">NIP : </label>
+										<input type="text" class="form-control" name="nip" required>
+									</div>
+									<div class="form-group">
+										<label for="nama">Nama Guru : </label>
+										<input type="text" class="form-control" name="nama" required>
+									</div>
+									<div class="form-group">
+										<label for="tempat_lahir">Tempat Lahir : </label>
+										<input type="text" class="form-control" name="tempat_lahir" required>
+									</div>
+									<div class="form-group">
+										<label for="tanggal_lahir">Tanggal Lahir : </label>
+										<input type="date" class="form-control" name="tanggal_lahir" required>
+									</div>
+									<div class="form-group">
+										<label for="notif_sms">Notif SMS : </label>
+										<select name="notif_sms" class="form-control">
+											<option value="ya">Ya</option>
+											<option value="tidak">Tidak</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="no_hp">Nomor Hp : </label>
+										<input type="text" class="form-control" name="no_hp">
+									</div>
+									<div class="form-group">
+										<label for="kelas">Kelas : </label>
+										<select name="id_kelas" class="form-control">
+											<?php
+											//								$link = koneksi_db();
+											$sql = "SELECT * FROM tb_kelas";
+											$res = mysqli_query( $link, $sql );
+											while ( $data_kelas = mysqli_fetch_array( $res ) ) {
+												?>
+											<option value="<?php echo $data_kelas['id_kelas']; ?>">
+												<?php echo $data_kelas['kelas']." ".$data_kelas['tingkatan']; ?>
+											</option>
+											<?php
+											}
+											//								$link -> close();
 											?>
-										<option value="<?php echo $data_kelas['id_kelas']; ?>">
-											<?php echo $data_kelas['kelas']." ".$data_kelas['tingkatan']; ?>
-										</option>
-										<?php
-										}
-										//								$link -> close();
-										?>
 
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="id_jabatan">Jabatan : </label>
-									<select name="id_jabatan" class="form-control">
-										<?php
-										//								$link = koneksi_db();
-										$sql = "SELECT * FROM tb_jabatan";
-										$res = mysqli_query( $link, $sql );
-										while ( $data_jabatan = mysqli_fetch_array( $res ) ) {
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="id_jabatan">Jabatan : </label>
+										<select name="id_jabatan" class="form-control">
+											<?php
+											//								$link = koneksi_db();
+											$sql = "SELECT * FROM tb_jabatan";
+											$res = mysqli_query( $link, $sql );
+											while ( $data_jabatan = mysqli_fetch_array( $res ) ) {
+												?>
+											<option value="<?php echo $data_jabatan['kode_jabatan']; ?>">
+												<?php echo $data_jabatan['nama_jabatan']; ?>
+											</option>
+											<?php
+											}
+											//								$link -> close();
 											?>
-										<option value="<?php echo $data_jabatan['kode_jabatan']; ?>">
-											<?php echo $data_jabatan['nama_jabatan']; ?>
-										</option>
-										<?php
-										}
-										//								$link -> close();
-										?>
 
-									</select>
-								</div>
-								<div class="form-group">
-									<label for="password">Password : </label>
-									<input type="text" class="form-control" name="password" required>
-								</div>
-								<div class="form-group">
-									<label for="foto">Foto:</label>
-									<input type="file" class="form-control" name="foto">
-								</div>
-								<div class="form-group">
-									<label for="status">Status:</label>
-									<select name="status" class="form-control">
-										<option value="0">Aktif</option>
-										<option value="1">Tidak Aktif</option>
-									</select>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="password">Password : </label>
+										<input type="text" class="form-control" name="password" required>
+									</div>
+									<div class="form-group">
+										<label for="foto">Foto:</label>
+										<input type="file" class="form-control" name="foto">
+									</div>
+									<div class="form-group">
+										<label for="status">Status:</label>
+										<select name="status" class="form-control">
+											<option value="0">Aktif</option>
+											<option value="1">Tidak Aktif</option>
+										</select>
 
+									</div>
 								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="reset" class="btn btn-default">Reset</button>
-								<button type="submit" class="btn btn-primary" name="submit">Simpan</button>
-							</div>
+								<div class="modal-footer">
+									<button type="reset" class="btn btn-default">Reset</button>
+									<button type="submit" class="btn btn-primary" name="submit">Simpan</button>
+								</div>
 							</form>
 						</div>
 					</div>
@@ -169,7 +180,7 @@ $result_guru = mysqli_query( $link, $query_guru );
 <script type="text/javascript">
 	function fnFormatDetails( oTable, nTr ) {
 		var sOut;
-		var nuptk, nip, nama_guru, tempat_lahir, tgl_lahir, status_guru, kelas, tingkatan,id_jabatan,nama_jabatan, password,id_kelas;
+		var nuptk, nip, nama_guru, tempat_lahir, tgl_lahir, status_guru, kelas, tingkatan, id_jabatan, nama_jabatan, password, id_kelas, notif_sms, no_hp;
 		var aData = oTable.fnGetData( nTr );
 		$.ajax( {
 			type: 'post',
@@ -181,7 +192,7 @@ $result_guru = mysqli_query( $link, $query_guru );
 			},
 			dataType: "json",
 			success: function ( data ) {
-				
+
 				nuptk = data.nuptk;
 				nip = data.nip;
 				nama_guru = data.nama_guru;
@@ -193,6 +204,8 @@ $result_guru = mysqli_query( $link, $query_guru );
 				nama_jabatan = data.nama_jabatan;
 				password = data.password;
 				id_kelas = data.id_kelas;
+				notif_sms = data.notif_sms;
+				no_hp = data.no_hp;
 
 				if ( status_guru == 1 ) {
 					status_guru = 'Tidak Aktif';
@@ -210,6 +223,8 @@ $result_guru = mysqli_query( $link, $query_guru );
 		sOut += '<tr><td>Kelas </td><td> : ' + kelas + ' ' + tingkatan + '</td></tr>';
 		sOut += '<tr><td>Jabatan </td><td> : ' + nama_jabatan + '</td></tr>';
 		sOut += '<tr><td>Status </td><td> : ' + status_guru + '</td></tr>';
+		sOut += '<tr><td>Notifikasi SMS </td><td> : ' + notif_sms + '</td></tr>';
+		sOut += '<tr><td>Nomor Hp </td><td> : ' + no_hp + '</td></tr>';
 		sOut += '</table>';
 
 		return sOut;
@@ -220,7 +235,7 @@ $result_guru = mysqli_query( $link, $query_guru );
 	function fnFormatEdit( oTable, nTr ) {
 		var sOut;
 		var jmlDataKelas, isiKelas;
-		var nuptk, nip, nama_guru, tempat_lahir, tgl_lahir, status_guru, kelas, tingkatan,kode_jabatan,nama_jabatan, password,id_kelas;
+		var nuptk, nip, nama_guru, tempat_lahir, tgl_lahir, status_guru, kelas, tingkatan, kode_jabatan, nama_jabatan, password, id_kelas, notif_sms, no_hp;
 		var aData = oTable.fnGetData( nTr );
 		$.ajax( {
 			type: 'post',
@@ -232,7 +247,7 @@ $result_guru = mysqli_query( $link, $query_guru );
 			},
 			dataType: "json",
 			success: function ( data_detail ) {
-				
+
 				nuptk = data_detail.nuptk;
 				nip = data_detail.nip;
 				nama_guru = data_detail.nama_guru;
@@ -245,6 +260,8 @@ $result_guru = mysqli_query( $link, $query_guru );
 				nama_jabatan = data_detail.nama_jabatan;
 				password = data_detail.password;
 				id_kelas = data_detail.id_kelas;
+				notif_sms = data_detail.notif_sms;
+				no_hp = data_detail.no_hp;
 			}
 		} );
 
@@ -279,7 +296,7 @@ $result_guru = mysqli_query( $link, $query_guru );
 			}
 		} );
 		var jmlDataJabatan, isiJabatan;
-		
+
 		$.ajax( {
 			type: 'post',
 			async: false,
@@ -310,7 +327,7 @@ $result_guru = mysqli_query( $link, $query_guru );
 			}
 		} );
 
-		
+
 
 
 
@@ -323,6 +340,17 @@ $result_guru = mysqli_query( $link, $query_guru );
 		sOut += '<tr><td><b>Nama Guru </td><td> : </b><input type="text" class="form-control round-form" name="nama" value="' + nama_guru + '"></td></tr>';
 		sOut += '<tr><td><b>Tempat Lahir </td><td> : </b><input type="text" name="tempat_lahir" class="form-control round-form" value="' + tempat_lahir + '"></td></tr>';
 		sOut += '<tr><td><b>Tanggal Lahir </td><td> : </b><input type="date" name="tgl_lahir" class="form-control round-form" value="' + tgl_lahir + '"></td></tr>';
+		sOut += '<tr><td><b>Notifikasi SMS </td><td> : </b><select name="notif_sms" class="form-control round-form">';
+		if ( notif_sms == 'ya' ) {
+			sOut += '<option value="ya" selected>Ya</option>';
+			sOut += '<option value="tidak">Tidak</option>';
+		} else {
+			sOut += '<option value="ya">Ya</option>';
+			sOut += '<option value="tidak" selected>Tidak</option>';
+		}
+
+		sOut += '</select></td></tr>';
+		sOut += '<tr><td><b>Nomor Hp </td><td> : </b><input type="text" name="no_hp" class="form-control round-form" value="' + no_hp + '"></td></tr>';
 		sOut += '<tr><td><b>Password </td><td> : </b><input type="text" name="password" class="form-control round-form" value="' + password + '"></td></tr>';
 		sOut += '<tr><td><b>Kelas </td><td> : </b>' + isiKelas + '</td></tr>';
 		sOut += '<tr><td><b>Jabatan </td><td> : </b>' + isiJabatan + '</td></tr>';

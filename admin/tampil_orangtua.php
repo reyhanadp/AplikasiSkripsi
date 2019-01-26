@@ -3,7 +3,7 @@ session_start();
 require( '../koneksi.php' );
 $link = koneksi_db();
 
-$query_orangtua = "select id_orangtua,nama,no_telp,foto from tb_orangtua";
+$query_orangtua = "select id_orangtua,nama,foto,no_hp from tb_orangtua";
 $result_orangtua = mysqli_query( $link, $query_orangtua );
 
 ?>
@@ -30,36 +30,43 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 								<h4 class="modal-title" id="myModalLabel">Tambah Data Orangtua</h4>
 							</div>
 							<form action="proses_tambah_data_orangtua.php" method="POST" onSubmit="return confirm('Apakah anda yakin ingin menyimpan data?');" enctype="multipart/form-data">
-							<div class="modal-body">
-								<div class="form-group">
-									<label for="id_orangtua">Id Orangtua : </label>
-									<input type="text" class="form-control" name="id_orangtua" required>
+								<div class="modal-body">
+									<div class="form-group">
+										<label for="id_orangtua">Id Orangtua : </label>
+										<input type="text" class="form-control" name="id_orangtua" required>
+									</div>
+									<div class="form-group">
+										<label for="nama">Nama Orangtua : </label>
+										<input type="text" class="form-control" name="nama" required>
+									</div>
+									<div class="form-group">
+										<label for="smartphone">Smartphone : </label>
+										<select name="smartphone" class="form-control">
+											<option value="ya">Ya</option>
+											<option value="tidak">Tidak</option>
+										</select>
+									</div>
+									<div class="form-group">
+										<label for="no_hp">Nomor Hp : </label>
+										<input type="text" class="form-control" name="no_hp">
+									</div>
+									<div class="form-group">
+										<label for="password">Password : </label>
+										<input type="text" class="form-control" name="password" required>
+									</div>
+									<div class="form-group">
+										<label for="alamat">Alamat :</label>
+										<textarea class="form-control" rows="3" name="alamat"></textarea>
+									</div>
+									<div class="form-group">
+										<label for="foto">Foto:</label>
+										<input type="file" class="form-control" name="foto">
+									</div>
 								</div>
-								<div class="form-group">
-									<label for="nama">Nama Orangtua : </label>
-									<input type="text" class="form-control" name="nama" required>
+								<div class="modal-footer">
+									<button type="reset" class="btn btn-default">Reset</button>
+									<button type="submit" class="btn btn-primary" name="submit">Simpan</button>
 								</div>
-								<div class="form-group">
-									<label for="no_telp">Nomor Telepon : </label>
-									<input type="text" class="form-control" name="no_telp" required>
-								</div>
-								<div class="form-group">
-									<label for="password">Password : </label>
-									<input type="text" class="form-control" name="password" required>
-								</div>
-								<div class="form-group">
-									<label for="alamat">Alamat :</label>
-									<textarea class="form-control" rows="3" name="alamat"></textarea>
-								</div>
-								<div class="form-group">
-									<label for="foto">Foto:</label>
-									<input type="file" class="form-control" name="foto">
-								</div>
-							</div>
-							<div class="modal-footer">
-								<button type="reset" class="btn btn-default">Reset</button>
-								<button type="submit" class="btn btn-primary" name="submit">Simpan</button>
-							</div>
 							</form>
 						</div>
 					</div>
@@ -79,7 +86,7 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 									<center>Nama Orangtua</center>
 								</th>
 								<th>
-									<center>No Telepon</center>
+									<center>Nomor Hp</center>
 								</th>
 								<th>
 									<center>Foto</center>
@@ -98,7 +105,7 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 									<?php echo $data_orangtua['nama']; ?>
 								</td>
 								<td>
-									<?php echo $data_orangtua['no_telp']; ?>
+									<?php echo $data_orangtua['no_hp']; ?>
 								</td>
 								<td class="center"><img class="img-rounded" src="../foto/orangtua/<?php echo $data_orangtua['foto']; ?>" width="75" height="75">
 								</td>
@@ -119,7 +126,7 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 <script type="text/javascript">
 	function fnFormatDetails( oTable, nTr ) {
 		var sOut;
-		var id_orangtua, nama_orangtua, alamat, no_telp, password, status;
+		var id_orangtua, nama_orangtua, alamat, password, status, smartphone, no_hp;
 		var aData = oTable.fnGetData( nTr );
 		$.ajax( {
 			type: 'post',
@@ -131,13 +138,14 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 			},
 			dataType: "json",
 			success: function ( data ) {
-				
+
 				id_orangtua = data.id_orangtua;
 				nama_orangtua = data.nama_orangtua;
 				alamat = data.alamat;
-				no_telp = data.no_telp;
 				password = data.password;
 				status = data.status;
+				smartphone = data.smartphone;
+				no_hp = data.no_hp;
 				
 				if ( status == 1 ) {
 					status = 'Tidak Aktif';
@@ -150,9 +158,10 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 		sOut += '<tr><td>Id Orangtua </td><td>: ' + id_orangtua + '</td></tr>';
 		sOut += '<tr><td>Nama Orangtua </td><td>: ' + nama_orangtua + '</td></tr>';
 		sOut += '<tr><td>Alamat </td><td> : ' + alamat + '</td></tr>';
-		sOut += '<tr><td>No Telepon </td><td> : ' + no_telp + '</td></tr>';
 		sOut += '<tr><td>Password </td><td> : ' + password + '</td></tr>';
 		sOut += '<tr><td>Status </td><td> : ' + status + '</td></tr>';
+		sOut += '<tr><td>Smartphone </td><td> : ' + smartphone + '</td></tr>';
+		sOut += '<tr><td>Nomor Hp </td><td> : ' + no_hp + '</td></tr>';
 		sOut += '</table>';
 
 		return sOut;
@@ -162,7 +171,7 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 
 	function fnFormatEdit( oTable, nTr ) {
 		var sOut;
-		var id_orangtua, nama_orangtua, alamat, no_telp, password, status;
+		var id_orangtua, nama_orangtua, alamat, password, status, smartphone, no_hp;
 		var aData = oTable.fnGetData( nTr );
 		$.ajax( {
 			type: 'post',
@@ -174,14 +183,15 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 			},
 			dataType: "json",
 			success: function ( data ) {
-				
+
 				id_orangtua = data.id_orangtua;
 				nama_orangtua = data.nama_orangtua;
 				alamat = data.alamat;
-				no_telp = data.no_telp;
 				password = data.password;
 				status = data.status;
-				
+				smartphone = data.smartphone;
+				no_hp = data.no_hp;
+
 				if ( status == 1 ) {
 					status = 'Tidak Aktif';
 				} else {
@@ -197,7 +207,17 @@ $result_orangtua = mysqli_query( $link, $query_orangtua );
 		sOut += '<tr><td><b>Id Orangtua </td><td> : ' + id_orangtua + '</b></td></tr>';
 		sOut += '<tr><td><b>Nama Orangtua </td><td> : </b><input type="text" class="form-control round-form" name="nama" value="' + nama_orangtua + '"></td></tr>';
 		sOut += '<tr><td><b>Alamat </td><td> : </b><textarea rows="3" name="alamat" class="form-control">' + alamat + '</textarea></td></tr>';
-		sOut += '<tr><td><b>No Telepon </td><td> : </b><input type="text" name="no_telp" class="form-control round-form" value="' + no_telp + '"></td></tr>';
+		sOut += '<tr><td><b>Smartphone </td><td> : </b><select name="smartphone" class="form-control round-form">';
+		if ( smartphone == 'ya' ) {
+			sOut += '<option value="ya" selected>Ya</option>';
+			sOut += '<option value="tidak">Tidak</option>';
+		} else {
+			sOut += '<option value="ya">Ya</option>';
+			sOut += '<option value="tidak" selected>Tidak</option>';
+		}
+
+		sOut += '</select></td></tr>';
+		sOut += '<tr><td><b>Nomor Hp </td><td> : </b><input type="text" name="no_hp" class="form-control round-form" value="' + no_hp + '"></td></tr>';
 		sOut += '<tr><td><b>Password </td><td> : </b><input type="text" name="password" class="form-control round-form" value="' + password + '"></td></tr>';
 		sOut += '<tr><td><b>Foto </td><td> : </b><input type="file" name="foto" class="form-control round-form"></td></tr>'
 		sOut += '<tr><td><b>Status </td><td> : </b><select name="status" class="form-control round-form">';

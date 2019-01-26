@@ -8,7 +8,7 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 		$jenis = $_POST[ 'jenis' ];
 		$id_geofencing = $_POST['id_geofencing'];
 
-		$query = "SELECT tb_koordinat.id_geofencing,tb_koordinat.latitude,tb_koordinat.longitude FROM `tb_geofencing` JOIN tb_koordinat on tb_geofencing.id_geofencing=tb_koordinat.id_geofencing where tb_geofencing.jenis='" . $jenis . "' and tb_koordinat.id_geofencing='".$id_geofencing."'";
+		$query = "SELECT tb_koordinat.id_geofencing,tb_koordinat.latitude,tb_koordinat.longitude,tb_koordinat.radius FROM `tb_geofencing` JOIN tb_koordinat on tb_geofencing.id_geofencing=tb_koordinat.id_geofencing where tb_geofencing.jenis='" . $jenis . "' and tb_koordinat.id_geofencing='".$id_geofencing."'";
 		$result = mysqli_query( $link, $query );
 		$i = 0;
 		$data_json = array();
@@ -19,5 +19,5 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 	}
 }
 
-
+mysqli_close($link);
 ?>

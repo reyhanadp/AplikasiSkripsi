@@ -388,12 +388,35 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 
 				<div class="top-menu">
 					<ul class="nav pull-right top-menu">
+
+						<li>
+							<a href="#ubah_pw" data-toggle="modal" class="logout" data-id="<?php echo $_SESSION['s_nuptk'];?>">Ubah Password</a>
+						</li>
 						<li>
 							<a class="logout" href="../logout.php">Logout</a>
 						</li>
 					</ul>
 				</div>
 			</header>
+
+			<div class="modal fade" id="ubah_pw" tabindex="-1" role="dialog" aria-labelledby="ubah" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+
+					<!-- Modal content-->
+					<div class="modal-content">
+						<div class="modal-header">
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+							<center>
+								<h4 class="modal-title">Ubah Password</h4>
+							</center>
+						</div>
+						<div class="modal-body">
+							<div class="isi_ubah_password"></div>
+						</div>
+
+					</div>
+				</div>
+			</div>
 
 			<div class="modal fade" id="konfirmasi" tabindex="-1" role="dialog" aria-labelledby="Konfimasi" aria-hidden="true">
 				<div class="modal-dialog" role="document">
@@ -444,6 +467,25 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 			</div>
 
 			<script>
+				//				ubah password modal
+				$( document ).ready( function () {
+					$( '#ubah_pw' ).on( 'show.bs.modal', function ( e ) {
+						var idx = $( e.relatedTarget ).data( 'id' ); //harus tetap id, jika tidak akan data tak akan terambil
+						//menggunakan fungsi ajax untuk pengambilan data
+						$.ajax( {
+							type: 'post',
+							url: 'ajax_ubah_password.php',
+							data: {
+								nuptk: idx
+							},
+							success: function ( data ) {
+								$( '.isi_ubah_password' ).html( data ); //menampilkan data ke dalam modal
+							}
+						} );
+					} );
+				} );
+
+
 				$( document ).ready( function () {
 					$( '#konfirmasi' ).on( 'show.bs.modal', function ( e ) {
 						//harus tetap id, jika tidak akan data tak akan terambil
@@ -683,9 +725,12 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 				var infoWindow = null;
 				var geocoder = null;
 				var geofencing_polygon = [];
+				var geofencing_circle = [];
 				var markersArray = [];
 				var guruMarkerArray = [];
 
+
+				//code cari siswa (sisi client)
 				$( document ).ready( function () {
 
 					$( "#cari_siswa" ).select2( {
@@ -706,7 +751,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 								if ( myLatlng == "(0, 0)" ) {
 									alert( data.nama + " tidak ada di map!!" );
 								} else {
-									map.panTo( myLatlng )
+									map.panTo( myLatlng );
 								}
 
 
@@ -743,9 +788,11 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 						dataType: "json",
 						success: function ( data_geofencing ) {
 							var jml_geofencing = data_geofencing.length;
-
+							var b = 0;
+							var c = 0;
 							if ( jml_geofencing != 0 ) {
 								for ( var i = 0; i < jml_geofencing; i++ ) {
+
 									$.ajax( {
 										type: 'post',
 										url: 'ajax_koordinat.php',
@@ -755,26 +802,55 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 										},
 										dataType: "json",
 										success: function ( data_koordinat ) {
-											var jmlKoordinat = data_koordinat.length;
 
-											var triangleCoords = [];
-											for ( var j = 0; j < jmlKoordinat; j++ ) {
-												triangleCoords.push( {
-													lat: parseFloat( data_koordinat[ j ][ "latitude" ] ),
-													lng: parseFloat( data_koordinat[ j ][ "longitude" ] )
+
+											if ( data_geofencing[ i ][ "bentuk" ] == "circle" ) {
+												geofencing_circle[ b ] = new google.maps.Circle( {
+													strokeColor: '#FF0000',
+													strokeOpacity: 0.8,
+													strokeWeight: 2,
+													fillColor: '#FF0000',
+													fillOpacity: 0.35,
+													id_geofencing: data_geofencing[ i ][ "id_geofencing" ],
+													map: map,
+													center: {
+														lat: parseFloat( data_koordinat[ 0 ][ "latitude" ] ),
+														lng: parseFloat( data_koordinat[ 0 ][ "longitude" ] )
+													},
+													radius: parseFloat( data_koordinat[ 0 ][ "radius" ] ),
+													title: data_geofencing[ i ][ "nama" ]
 												} );
+
+												geofencing_circle[ b ].addListener( 'mouseover', function () {
+													this.getMap().getDiv().setAttribute( 'title', this.get( 'title' ) );
+												} );
+
+												geofencing_circle[ b ].addListener( 'mouseout', function () {
+													this.getMap().getDiv().removeAttribute( 'title' );
+												} );
+
+												b++;
+											} else {
+												var jmlKoordinat = data_koordinat.length;
+												var triangleCoords = [];
+												for ( var j = 0; j < jmlKoordinat; j++ ) {
+													triangleCoords.push( {
+														lat: parseFloat( data_koordinat[ j ][ "latitude" ] ),
+														lng: parseFloat( data_koordinat[ j ][ "longitude" ] )
+													} );
+												}
+												geofencing_polygon[ c ] = new google.maps.Polygon( {
+													paths: triangleCoords,
+													strokeColor: '#FF0000',
+													strokeOpacity: 0.8,
+													strokeWeight: 3,
+													fillColor: '#FF0000',
+													fillOpacity: 0.35
+												} );
+
+												geofencing_polygon[ c ].setMap( map );
+												c++;
 											}
-											geofencing_polygon[ i ] = new google.maps.Polygon( {
-												paths: triangleCoords,
-												strokeColor: '#FF0000',
-												strokeOpacity: 0.8,
-												strokeWeight: 3,
-												fillColor: '#FF0000',
-												fillOpacity: 0.35,
-											} );
-
-											geofencing_polygon[ i ].setMap( map );
-
 										}
 									} );
 								}
@@ -783,13 +859,15 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 							}
 						}
 					} );
+
 					updateMaps();
 					window.setInterval( updateMaps, 10000 );
 				}
 
-				function CustomMarker( latlng, map, imageSrc ) {
+				function CustomMarker( latlng, map, imageSrc, nis ) {
 					this.latlng_ = latlng;
 					this.imageSrc = imageSrc;
+					this.nis = nis;
 
 					// Once the LatLng and text are set, add the overlay to the map.  This will
 					// trigger a call to panes_changed which should in turn call draw.
@@ -807,13 +885,25 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 						// Create the DIV representing our CustomMarker
 						div.className = "customMarker"
 
-
+						div.title = 'Siswa';
 						var img = document.createElement( "img" );
 						img.src = this.imageSrc;
 						div.appendChild( img );
 						var me = this;
+						var nis = this.nis;
 						google.maps.event.addDomListener( div, "click", function ( event ) {
-							google.maps.event.trigger( me, "click" );
+							$( "#detail_siswa" ).modal();
+							$.ajax( {
+								type: 'post',
+								url: 'ajax_detail_siswa.php',
+								data: {
+									nis: nis,
+								},
+								success: function ( data ) {
+									$( '.detail-siswa' ).html( data ); //menampilkan data ke dalam modal
+									geocodeLatLng( geocoder, latitude, longitude );
+								}
+							} );
 						} );
 
 						// Then add the overlay to the DOM
@@ -863,7 +953,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 						// Create the DIV representing our CustomMarker
 						div.className = "customMarkerGuru"
 
-
+						div.title = 'Guru';
 						var img = document.createElement( "img" );
 
 						img.src = this.imageSrc;
@@ -901,13 +991,16 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 				};
 
 				function clearOverlays() {
+
 					for ( var i = 0; i < markersArray.length; i++ ) {
 						markersArray[ i ].setMap( null );
-					}
 
+					}
+					markersArray = [];
 					for ( var i = 0; i < guruMarkerArray.length; i++ ) {
 						guruMarkerArray[ i ].setMap( null );
 					}
+					guruMarkerArray = [];
 				}
 
 				function menampilkan_posisi_guru( position ) {
@@ -922,7 +1015,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 								var myLatLngGuru = new CustomMarkerGuru( new google.maps.LatLng( parseFloat( marker.attr( "lat" ) ), parseFloat( marker.attr( "lng" ) ) ), map, "../foto/guru/" + marker.attr( "foto" ) );
 
 
-								markersArray.push( myLatLngGuru );
+								guruMarkerArray.push( myLatLngGuru );
 							} );
 					} );
 				}
@@ -940,7 +1033,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 								var notifikasi = [];
 								for ( var i = data_notif.length - 1; i >= 0; i-- ) {
 									notifikasi[ i ] = new Notification( data_notif[ i ][ 'nama' ], {
-										icon: "../foto/guru/" + data_notif[ i ][ 'foto' ],
+										icon: "../foto/siswa/" + data_notif[ i ][ 'foto' ],
 										body: data_notif[ i ][ 'pesan_notif' ],
 									} );
 									document.getElementById( 'audiotag1' ).play();
@@ -957,7 +1050,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 					$.ajax( {
 						type: 'post',
 						url: 'ajax_ambil_guru_tanpa_smartphone.php',
-						aasync: false,
+						async: false,
 						dataType: "json",
 						success: function ( data_nuptk ) {
 							var jml_nuptk = data_nuptk.length;
@@ -973,7 +1066,6 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 									dataType: "json",
 									success: function ( data_id_notifikasi ) {
 										var jml_id_notifikasi = data_id_notifikasi.length;
-
 										for ( var l = 0; l < jml_id_notifikasi; l++ ) {
 
 											$.ajax( {
@@ -984,6 +1076,8 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 													id_notifikasi: data_id_notifikasi[ l ][ "id_notifikasi" ],
 													no_hp: data_nuptk[ k ][ "no_hp" ],
 													lokasi: data_id_notifikasi[ l ][ "alamat" ],
+													lat: data_id_notifikasi[ l ][ "lat" ],
+													longitude: data_id_notifikasi[ l ][ "longitude" ],
 													nama_siswa: data_id_notifikasi[ l ][ "nama" ],
 													pesan: data_id_notifikasi[ l ][ "pesan_notif" ],
 													kelas: data_id_notifikasi[ l ][ "kelas" ],
@@ -1044,7 +1138,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 
 				function updateMaps() {
 					load_notification();
-					notifikasi_sms_gateway();
+					//					notifikasi_sms_gateway();
 
 					var cek_jarak_guru_siswa;
 					if ( i != 0 ) {
@@ -1059,6 +1153,7 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 					var data = 'data_siswa.php';
 
 					var jml_polygon = geofencing_polygon.length;
+					var jml_circle = geofencing_circle.length;
 					//Me guardo o direito a não explicar o óbvio, novamente
 					$.get( data, {}, function ( data ) {
 						$( data ).find( "marker" ).each(
@@ -1069,163 +1164,9 @@ if ( isset( $_SESSION[ 's_nuptk' ] ) ) {
 
 								var lat_lng = new google.maps.LatLng( parseFloat( marker.attr( "lat" ) ), parseFloat( marker.attr( "lng" ) ) );
 
-								var overlay = new CustomMarker( lat_lng, map, "../foto/siswa/" + marker.attr( "foto" ) );
+								var overlay = new CustomMarker( lat_lng, map, "../foto/siswa/" + marker.attr( "foto" ), marker.attr( "nis" ) );
 
 								markersArray.push( overlay );
-
-								var myLatlng = new google.maps.LatLng( marker.attr( "lat" ), marker.attr( "lng" ) );
-
-
-								for ( var q = 0; q < jml_polygon; q++ ) {
-									var hasil = google.maps.geometry.poly.containsLocation( myLatlng, geofencing_polygon[ q ] ) ? "didalam" : "diluar";
-
-									if ( hasil == "didalam" ) {
-										break;
-									}
-								}
-
-								var cek_jarak_guru_siswa = 1;
-
-								$.ajax( {
-									type: 'post',
-									url: 'ajax_posisi_guru.php',
-									async: false,
-									dataType: "json",
-									success: function ( data_posisi_guru ) {
-										var jml_posisi_guru = data_posisi_guru.length;
-
-										for ( var j = 0; j < jml_posisi_guru; j++ ) {
-
-											var posisi_guru = new google.maps.LatLng( data_posisi_guru[ j ][ "latitude" ], data_posisi_guru[ j ][ "longitude" ] );
-
-											var jarak = Math.round( google.maps.geometry.spherical.computeDistanceBetween( myLatlng, posisi_guru ) );
-
-											if ( jarak < 10 ) {
-												cek_jarak_guru_siswa = 0;
-											}
-										}
-									}
-								} );
-
-
-								if ( marker.attr( "status" ) == 0 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "0 jadi 4";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "0 jadi 2";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "0 jadi 3";
-												}
-											}
-
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "0 jadi 3";
-											}
-										}
-									} else if ( marker.attr( "cek_jadwal" ) == "no" ) {
-										ubah_status = "0 jadi 5";
-									}
-								} else if ( marker.attr( "status" ) == 2 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "2 jadi 4";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "2 jadi 3";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "2 jadi 0";
-												}
-											}
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "2 jadi 3";
-											} else if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "2 jadi 0";
-											}
-										}
-									}
-								} else if ( marker.attr( "status" ) == 3 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "3 jadi 4";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "3 jadi 2";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "3 jadi 0";
-												}
-											}
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "3 jadi 0";
-											}
-										}
-									} else if ( marker.attr( "cek_jadwal" ) == "no" ) {
-										ubah_status = "3 jadi 5";
-									}
-								} else if ( marker.attr( "status" ) == 4 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "diluar" ) {
-											if ( cek_jarak_guru_siswa == 1 ) {
-												if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "4 jadi 2";
-												}
-											} else if ( cek_jarak_guru_siswa == 0 ) {
-												if ( marker.attr( "baterai" ) <= 15 ) {
-													ubah_status = "4 jadi 3";
-												} else if ( marker.attr( "baterai" ) > 15 ) {
-													ubah_status = "4 jadi 0";
-												}
-											}
-										} else if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "4 jadi 3";
-											} else if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "4 jadi 0";
-											}
-										}
-									}
-								} else if ( marker.attr( "status" ) == 5 ) {
-									if ( marker.attr( "cek_jadwal" ) == "yes" ) {
-										if ( hasil == "didalam" ) {
-											if ( marker.attr( "baterai" ) <= 15 ) {
-												ubah_status = "5 jadi 3";
-											} else if ( marker.attr( "baterai" ) > 15 ) {
-												ubah_status = "5 jadi 0";
-											}
-										}
-									}
-								}
-
-								if ( ubah_status != "tetap" ) {
-
-									$.ajax( {
-										type: 'post',
-										url: 'ajax_update_status.php',
-										async: false,
-										data: {
-											nis: marker.attr( "nis" ),
-											kelas: marker.attr( "kelas" ),
-											nama: marker.attr( "nama" ),
-											perintah: ubah_status
-										},
-										success: function ( data ) {
-											load_notification();
-										}
-									} );
-								}
 							} );
 					} );
 

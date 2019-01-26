@@ -19,5 +19,5 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 		);
 }
 echo json_encode( $data_json );
-
+mysqli_close($link);
 ?>

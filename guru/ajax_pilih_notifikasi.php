@@ -44,7 +44,7 @@ while ( $data_ambil_konfirmasi = mysqli_fetch_array( $result_ambil_konfirmasi ) 
 					</div>
 					<div class="col-md-4">
 						<?php
-						if ( $data_ambil_konfirmasi[ 'status' ] == 0 ) {
+						if ( $data_ambil_konfirmasi[ 'status' ] == 0 && ($data_ambil_konfirmasi['pesan_notif'] == 'keluar sekolah' || $data_ambil_konfirmasi['pesan_notif'] == 'keluar sekolah dan baterai lemah')) {
 							?>
 						<div class="row">
 							<div class="col-md-12">

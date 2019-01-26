@@ -23,10 +23,21 @@
 	<link href="../halaman_utama/css/style.css" rel="stylesheet">
 	<link href="../halaman_utama/css/style-responsive.css" rel="stylesheet">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+
+	<?php
+	if ( !isset( $_GET[ 'menu' ] ) ) {
+		?>
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&libraries=geometry"></script>
 	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	
-	
+	<?php
+
+	}
+	?>
+
+
+
+
+
 
 	<!-- =======================================================
     Template Name: Dashio

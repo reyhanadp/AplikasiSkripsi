@@ -27,7 +27,7 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 			'nama_guru' => $data['nama_guru']
 		);
 	}else if($_POST[ 'jenis' ] == "guru"){
-		$sql = "SELECT tb_guru.nuptk,tb_guru.nip,tb_guru.nama 'nama_guru',tb_guru.tempat_lahir,tb_guru.tgl_lahir,tb_kelas.kelas,tb_kelas.tingkatan,tb_jabatan.kode_jabatan,tb_jabatan.nama_jabatan,tb_guru.status,tb_guru.password,tb_guru.id_kelas FROM `tb_guru` JOIN tb_jabatan ON tb_guru.kode_jabatan=tb_jabatan.kode_jabatan JOIN tb_kelas ON tb_guru.id_kelas=tb_kelas.id_kelas where tb_guru.nuptk = '" . $_POST[ 'id' ] . "'";
+		$sql = "SELECT tb_guru.nuptk,tb_guru.nip,tb_guru.nama 'nama_guru',tb_guru.tempat_lahir,tb_guru.tgl_lahir,tb_kelas.kelas,tb_kelas.tingkatan,tb_jabatan.kode_jabatan,tb_jabatan.nama_jabatan,tb_guru.status,tb_guru.password,tb_guru.id_kelas,tb_guru.notif_sms,tb_guru.no_hp FROM `tb_guru` JOIN tb_jabatan ON tb_guru.kode_jabatan=tb_jabatan.kode_jabatan JOIN tb_kelas ON tb_guru.id_kelas=tb_kelas.id_kelas where tb_guru.nuptk = '" . $_POST[ 'id' ] . "'";
 		$res = mysqli_query( $link, $sql );
 
 		$data = mysqli_fetch_array( $res );
@@ -44,7 +44,9 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 			'nama_jabatan' => $data['nama_jabatan'],
 			'status_guru' => $data[ 'status_guru' ],
 			'password' => $data['password'],
-			'id_kelas' => $data['id_kelas']
+			'id_kelas' => $data['id_kelas'],
+			'notif_sms' => $data['notif_sms'],
+			'no_hp' => $data['no_hp']
 		);
 	}else if($_POST[ 'jenis' ] == "orangtua"){
 		$sql = "SELECT * FROM `tb_orangtua` where id_orangtua = '" . $_POST[ 'id' ] . "'";
@@ -56,9 +58,10 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 			'id_orangtua' => $data[ 'id_orangtua' ],
 			'nama_orangtua' => $data[ 'nama' ],
 			'alamat' => $data[ 'alamat' ],
-			'no_telp' => $data[ 'no_telp' ],
 			'password' => $data['password'],
-			'status' => $data[ 'status' ]
+			'status' => $data[ 'status' ],
+			'smartphone' => $data['smartphone'],
+			'no_hp' => $data['no_hp']
 		);
 	}else if($_POST[ 'jenis' ] == "jabatan"){
 		$sql = "SELECT * FROM `tb_jabatan` where kode_jabatan = '" . $_POST[ 'id' ] . "'";

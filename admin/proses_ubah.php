@@ -116,6 +116,8 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 		$id_kelas = $_POST[ 'id_kelas' ];
 		$id_jabatan = $_POST[ 'id_jabatan' ];
 		$status = $_POST[ 'status' ];
+		$notif_sms = $_POST['notif_sms'];
+		$no_hp = $_POST['no_hp'];
 
 		$time = time();
 		$nama = $_FILES[ 'foto' ][ 'name' ];
@@ -130,7 +132,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 				if ( $format == "jpg" || $format == "png" || $format == "jpeg" || $format == "JPG" || $format == "PNG" || $format == "JPEG" || $format == "" ) {
 
 					if ( $error == 4 ) {
-						$sql = "UPDATE `tb_guru` SET nip='$nip',`nama`='$nama_guru',`password`='$password',`tempat_lahir`='$tempat_lahir',`tgl_lahir`='$tgl_lahir',`id_kelas`='$id_kelas',`kode_jabatan`='$id_jabatan',status = '$status' WHERE nuptk='" . $nuptk . "'";
+						$sql = "UPDATE `tb_guru` SET nip='$nip',`nama`='$nama_guru',`password`='$password',`tempat_lahir`='$tempat_lahir',`tgl_lahir`='$tgl_lahir',`id_kelas`='$id_kelas',`kode_jabatan`='$id_jabatan',status = '$status', notif_sms = '$notif_sms', no_hp='$no_hp' WHERE nuptk='" . $nuptk . "'";
 					} else {
 						$format2 = "." . $format;
 						$namafile = "../foto/guru/" . $nama;
@@ -146,7 +148,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 							}
 						}
 
-						$sql = "UPDATE `tb_guru` SET nip='$nip',`nama`='$nama_guru',`password`='$password',`tempat_lahir`='$tempat_lahir',`tgl_lahir`='$tgl_lahir',`id_kelas`='$id_kelas',`kode_jabatan`='$id_jabatan',status = '$status', foto = '$nama1' WHERE nuptk='" . $nuptk . "'";
+						$sql = "UPDATE `tb_guru` SET nip='$nip',`nama`='$nama_guru',`password`='$password',`tempat_lahir`='$tempat_lahir',`tgl_lahir`='$tgl_lahir',`id_kelas`='$id_kelas',`kode_jabatan`='$id_jabatan',status = '$status', foto = '$nama1', notif_sms = '$notif_sms', no_hp='$no_hp' WHERE nuptk='" . $nuptk . "'";
 					}
 
 					$res = mysqli_query( $link, $sql );
@@ -204,8 +206,9 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 		$nama_orangtua = $_POST[ 'nama' ];
 		$alamat = $_POST[ 'alamat' ];
 		$password = $_POST[ 'password' ];
-		$no_telp = $_POST[ 'no_telp' ];
 		$status = $_POST[ 'status' ];
+		$smartphone = $_POST['smartphone'];
+		$no_hp = $_POST['no_hp'];
 
 		$time = time();
 		$nama = $_FILES[ 'foto' ][ 'name' ];
@@ -220,7 +223,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 				if ( $format == "jpg" || $format == "png" || $format == "jpeg" || $format == "JPG" || $format == "PNG" || $format == "JPEG" || $format == "" ) {
 
 					if ( $error == 4 ) {
-						$sql = "UPDATE `tb_orangtua` SET `nama`='$nama_orangtua',`alamat`='$alamat',`no_telp`='$no_telp',`password`='$password',`status`='$status' WHERE id_orangtua='$id_orangtua'";
+						$sql = "UPDATE `tb_orangtua` SET `nama`='$nama_orangtua',`alamat`='$alamat',`password`='$password',`status`='$status', smartphone = '$smartphone', no_hp='$no_hp' WHERE id_orangtua='$id_orangtua'";
 					} else {
 						$format2 = "." . $format;
 						$namafile = "../foto/orangtua/" . $nama;
@@ -236,7 +239,7 @@ if ( isset( $_POST[ 'submit' ] ) ) {
 							}
 						}
 
-						$sql = "UPDATE `tb_orangtua` SET `nama`='$nama_orangtua',`alamat`='$alamat',`no_telp`='$no_telp',`password`='$password',`status`='$status',foto = '$nama1' WHERE id_orangtua='$id_orangtua'";
+						$sql = "UPDATE `tb_orangtua` SET `nama`='$nama_orangtua',`alamat`='$alamat',`password`='$password',`status`='$status',foto = '$nama1', smartphone = '$smartphone', no_hp='$no_hp' WHERE id_orangtua='$id_orangtua'";
 
 					}
 

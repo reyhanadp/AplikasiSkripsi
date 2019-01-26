@@ -17,7 +17,7 @@
 	if(isset($_GET['menu'])){
 	if($_GET['menu']=="geofencing"){
 ?>
-<script async defer type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&callback=initMap&libraries=drawing&libraries=places,drawing"></script>
+<script async defer type="text/javascript" src="https://maps.google.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&callback=initMap&libraries=drawing&libraries=places,drawing"></script>
 <?php
 	}
 		}

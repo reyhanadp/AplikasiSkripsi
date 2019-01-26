@@ -2,9 +2,10 @@
 session_start();
 require '../sms_gateway/autoload.php';
 require "../koneksi.php";
+
 $link = koneksi_db();
 
-$query_insert_status = "INSERT INTO `tb_status` VALUES (NULL,'" . $_POST[ 'id_notifikasi' ] . "','" . $_SESSION[ 's_nuptk' ] . "','1')";
+$query_insert_status = "INSERT INTO `tb_status` VALUES (NULL,'" . $_POST[ 'id_notifikasi' ] . "','" . $_POST[ 'nuptk' ] . "','0')";
 $result_insert_status = mysqli_query( $link, $query_insert_status );
 
 $query_ambil_device = "SELECT `id_device` FROM `tb_device` WHERE `status`='aktif'";
@@ -28,7 +29,9 @@ $sendMessageRequest1 = new SendMessageRequest([
     'message' => 'nama : '.$_POST['nama_siswa'].'
 Kelas : '.$_POST['kelas'].' '.$_POST['tingkatan'].'
 Status : '.$_POST['pesan'].'
-Lokasi : '.$_POST['lokasi'],
+Lokasi : '.$_POST['lokasi'].'
+
+www.google.com/maps/place/'.$_POST['lat'].','.$_POST['longitude'],
     'deviceId' => $data_ambil_device['id_device']
 ]);
 $sendMessages = $messageClient->sendMessages([

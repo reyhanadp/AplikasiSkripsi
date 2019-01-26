@@ -99,7 +99,7 @@ $data = mysqli_fetch_assoc( $res );
 	</table>
 </div>
 <div class="modal-footer">
-	<form action="index.php" target="_blank" method="get" enctype="multipart/form-data">
+	<form action="history_siswa.php" target="_blank" method="post" enctype="multipart/form-data">
 			<input type="text" hidden name="nis" value="<?php echo $_POST['nis']; ?>">
 			<button type="submit" class="form-control btn-default">Lihat History Anak</button>
 		</form>

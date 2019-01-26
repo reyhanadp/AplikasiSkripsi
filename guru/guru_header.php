@@ -22,11 +22,22 @@
 	<!-- Custom styles for this template -->
 	<link href="../halaman_utama/css/style.css" rel="stylesheet">
 	<link href="../halaman_utama/css/style-responsive.css" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<link rel="stylesheet" href="../pace/themes/blue/pace-theme-minimal.css">
+	<link rel="stylesheet" type="text/css" href="../halaman_utama/lib/bootstrap-fileupload/bootstrap-fileupload.css"/>
+	<link rel="stylesheet" type="text/css" href="../halaman_utama/lib/bootstrap-datepicker/css/datepicker.css"/>
+	<link rel="stylesheet" type="text/css" href="../halaman_utama/lib/bootstrap-daterangepicker/daterangepicker.css"/>
+	<link rel="stylesheet" type="text/css" href="../halaman_utama/lib/bootstrap-timepicker/compiled/timepicker.css"/>
+	<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
+
+	<script src="../pace/pace.js"></script>
+	<!--	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>-->
 	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&libraries=geometry"></script>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	
-	
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
+
+	<!--	date picker-->
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+
+
 
 	<!-- =======================================================
     Template Name: Dashio

@@ -13,6 +13,9 @@ $res_ambil_notif = mysqli_query( $link, $sql_ambil_notif );
 	<p class="green">Anda Mempunyai
 		<?php  echo $_POST['jumlah_notif'];?> Notifkasi</p>
 </li>
+<li>
+	<a href="#konfirmasi" data-toggle="modal"><strong>Lihat Semua Notifikasi</strong></a>
+</li>
 
 <?php
 
@@ -76,7 +79,3 @@ while ( $data_ambil_notif = mysqli_fetch_array( $res_ambil_notif ) ) {
 }
 mysqli_close($link);
 ?>
-
-<li>
-	<a href="#konfirmasi" data-toggle="modal"><strong>Lihat Semua Notifikasi</strong></a>
-</li>

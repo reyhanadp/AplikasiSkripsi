@@ -11,6 +11,13 @@
 <script src="../halaman_utama/lib/common-scripts.js"></script>
 <!--script for this page-->
 <!--Google Map-->
+<?php
+	if(isset($_GET['menu'])){
+		?>
+<script async defer type="text/javascript" src="http://maps.google.com/maps/api/js?key=AIzaSyDeSbTd4xPktRSQwbytnDN33ugM6sJrq_0&callback=initMap&libraries=drawing&libraries=places,drawing"></script>
+<?php
+	}
+?>
 
 
 

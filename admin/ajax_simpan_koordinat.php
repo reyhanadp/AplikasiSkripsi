@@ -26,7 +26,11 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 			
 			$res_insert = mysqli_query( $link, $sql_insert );
 		}
+	}else if($jenis == 'circle'){
+		$sql_insert = "INSERT INTO `tb_koordinat`(`id_koordinat`, `id_geofencing`, `latitude`, `longitude`, `radius`) VALUES (NULL,'".$_POST['id_geofencing']."','".$_POST['lat']."','".$_POST['lng']."','".$_POST['radius']."')";
+		$res_insert = mysqli_query( $link, $sql_insert );
 	}
+	
 	if($res_insert){
 		$data_json = array(
 			'hasil' => "berhasil"
@@ -38,6 +42,6 @@ if ( isset( $_POST[ 'jenis' ] ) ) {
 	}
 	echo json_encode( $data_json );
 }
-
+mysqli_close($link);
 
 ?>

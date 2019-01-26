@@ -6,8 +6,10 @@ if (!empty( $_POST[ 'id_orangtua' ]) ) {
 	$id_orangtua=$_POST['id_orangtua'];
 	$nama_orangtua=$_POST['nama'];
 	$alamat=$_POST['alamat'];
-	$no_telp=$_POST['no_telp'];
 	$password=$_POST['password'];
+	$smartphone = $_POST['smartphone'];
+	$no_hp = $_POST['no_hp'];
+
 
 	$time = time();
 	$nama = $_FILES[ 'foto' ][ 'name' ];
@@ -33,7 +35,7 @@ if (!empty( $_POST[ 'id_orangtua' ]) ) {
 					$nama1 = $nama1 . "_" . $time . $format2;
 				}
 
-				$sql = "INSERT INTO `tb_orangtua`(`id_orangtua`, `nama`, `foto`, `alamat`, `no_telp`, `password`, `status`) VALUES ('$id_orangtua','$nama_orangtua','$nama1', '$alamat','$no_telp', '$password','0');";
+				$sql = "INSERT INTO `tb_orangtua`(`id_orangtua`, `nama`, `foto`, `alamat`, `password`, `status`, `latitude`, `longitude`, `smartphone`, `no_hp`) VALUES ('$id_orangtua','$nama_orangtua','$nama1', '$alamat', '$password','0',NULL,NULL,'$smartphone','$no_hp');";
 				$res = mysqli_query( $link, $sql );
 				
 				if ( $res ) {

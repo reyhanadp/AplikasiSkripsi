@@ -12,6 +12,8 @@ if (!empty( $_POST[ 'nuptk' ]) ) {
 	$id_kelas = $_POST[ 'id_kelas' ];
 	$id_jabatan = $_POST[ 'id_jabatan' ];
 	$status = $_POST['status'];
+	$notif_sms = $_POST['notif_sms'];
+	$no_hp = $_POST['no_hp'];
 
 	$time = time();
 	$nama = $_FILES[ 'foto' ][ 'name' ];
@@ -38,7 +40,7 @@ if (!empty( $_POST[ 'nuptk' ]) ) {
 				}
 
 
-				$sql = "INSERT INTO `tb_guru`(`nuptk`, `nip`, `foto`, `nama`, `tempat_lahir`, `tgl_lahir`, `kode_jabatan`, `password`, `status`, `id_kelas`, `longitude`, `latitude`) VALUES ('$nuptk','$nip','$nama1', '$nama_guru', '$tempat_lahir','$tgl_lahir', '$id_jabatan','$password','$status','$id_kelas',NULL,NULL);";
+				$sql = "INSERT INTO `tb_guru`(`nuptk`, `nip`, `foto`, `nama`, `tempat_lahir`, `tgl_lahir`, `kode_jabatan`, `password`, `status`, `id_kelas`, `longitude`, `latitude`, `notif_sms`, `no_hp`) VALUES ('$nuptk','$nip','$nama1', '$nama_guru', '$tempat_lahir','$tgl_lahir', '$id_jabatan','$password','$status','$id_kelas',NULL,NULL,'$notif_sms','$no_hp');";
 				$res = mysqli_query( $link, $sql );
 
 				if ( $res ) {

@@ -24,8 +24,11 @@
 	<!-- Custom styles for this template -->
 	<link href="../halaman_utama/css/style.css" rel="stylesheet">
 	<link href="../halaman_utama/css/style-responsive.css" rel="stylesheet">
+	<link rel="stylesheet" href="../pace/themes/blue/pace-theme-minimal.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.4.2/css/bootstrap-slider.min.css">
+	<script src="../pace/pace.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.4.2/bootstrap-slider.min.js"></script>
 
 	<!-- =======================================================
     Template Name: Dashio

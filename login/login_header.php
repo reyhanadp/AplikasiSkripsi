@@ -21,6 +21,9 @@
 <!--===============================================================================================-->
 	<link rel="stylesheet" type="text/css" href="halaman_login/css/util.css">
 	<link rel="stylesheet" type="text/css" href="halaman_login/css/main.css">
+	<link rel="stylesheet" href="pace/themes/blue/pace-theme-corner-indicator.css">
+	<script src="pace/pace.js"></script>
+
 <!--===============================================================================================-->
 </head>
 	

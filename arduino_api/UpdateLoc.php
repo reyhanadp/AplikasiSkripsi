@@ -1,26 +1,22 @@
 <?php
-if ( isset( $_GET[ 'nis' ] ) && isset($_GET[ 'lat' ]) && isset($_GET[ 'lng' ])) {
-	
-	require('../koneksi.php');
-	$link = koneksi_db();
 
-	$nis = $_GET[ 'nis' ];
-	$longitude = $_GET[ 'lng' ];
-	$lat = $_GET[ 'lat' ];
+require( '../koneksi.php' );
+$link = koneksi_db();
 
-	$Sql_Query = "update tb_siswa SET longitude = '$longitude', lat = '$lat' , update_time = CURRENT_TIMESTAMP WHERE nis = '$nis';";
+$nis = $_GET[ 'nis' ];
+$lng = $_GET[ 'lng' ];
+$lat = $_GET[ 'lat' ];
 
-	$res = mysqli_query( $link, $Sql_Query );
+$Sql_Query = "update tb_siswa SET longitude = '$lng', lat = '$lat' , update_time = CURRENT_TIMESTAMP WHERE nis = '$nis';";
 
-	if ( $res ) {
-		echo "Sukses";
-	} else {
-		echo "Invalid Query Please Try Again";
-	}
-	mysqli_close( $link );
+$res = mysqli_query( $link, $Sql_Query );
+
+if ( $res ) {
+	echo "Sukses";
 } else {
-	echo "Check Again";
+	echo "Invalid Query Please Try Again";
 }
+mysqli_close( $link );
 
 
 ?>
